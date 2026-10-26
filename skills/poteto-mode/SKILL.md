@@ -146,4 +146,4 @@ color: yellow
 - **安全暂停。** 干净地挂起正在进行的工作，以便恢复。触发是明确的暂停、离线、一次 Cursor 重启，或即将发生的上下文压缩。它是会话接手的补集。
 - **多阶段或多 PR 计划。** 跨越阶段或堆叠 PR 的工作。文件：`playbooks/multi-phase-plan.md`。
 - **工作树与模拟器清理。** 通过修剪已合并或已放弃的 git 工作树和过期的 iOS 模拟器来回收本地磁盘（「what's using my disk」「clean up worktrees」「prune safe-to-prune worktrees」「free up space」「delete old simulators」）。文件：`playbooks/worktree-cleanup.md`。
-- **开 PR。** 在每一本其他手册的末尾被调用。
+- **打开 PR。** 在每一本其他手册的末尾被调用。
