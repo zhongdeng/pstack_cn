@@ -1,7 +1,7 @@
 {
 	"name": "pstack",
 	"displayName": "pstack",
-	"version": "0.15.32",
+	"version": "0.15.36",
 	"description": "想快，就先做深。pstack 帮你写得更少，但质量更高。一套可以放心并行的严谨智能体工作流。",
 	"author": {
 		"name": "Lauren Tan"
