@@ -79,13 +79,13 @@ flowchart TD
 /poteto-mode full autopilot on this queue. each item is independent. i want them merged by morning.
 ```
 
-[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) 跑同一个负责人循环，但什么都不交付。你醒来时看到一条线性的基分支栈，每一环上都有验证者的裁决，你自己评审并合入。当改动是耦合的，或者你想在任何东西合并之前用自己的眼睛看过，就选它而不是 Autopilot-full：
+[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) 是去掉合并的 Autopilot-full。你醒来时看到已验证的 PR，每一个都带着自己的裁决，你自己评审并合入。一个 PR 只叠在它所基于的那个 PR 上。当你想在任何东西合并之前用自己的眼睛看过，就选它而不是 Autopilot-full：
 
 ```text
-/poteto-mode autopilot these five changes but stack them, don't ship. i'll land the stack in the morning.
+/poteto-mode autopilot these five changes, but don't merge. i'll land them in the morning.
 ```
 
-[编排](../../skills/poteto-mode/playbooks/orchestrate.md)用于一项比任何单个 agent 都活得久的工程：跨多日、许多堆叠的 PR、在一个常设协调者对话之下的成队子 agent。协调者撰写简报，收集它的子 agent 完成的东西，保持最低的未合并 PR 全绿，并且自己从不写代码。它故意是重型机械。如果一个 agent 能在一次会话里做完这份工作，行动手册自己会把你送回上面的通宵约定：
+[编排](../../skills/poteto-mode/playbooks/orchestrate.md)用于一项比任何单个 agent 都活得久的工程：跨多日、许多堆叠的 PR、在一个常设协调者对话之下的成队子 agent。协调者决定哪一个 agent 做每一块工作，检查每一个产出了什么，并且自己从不写代码。如果一个 agent 能在一次会话里做完这份工作，行动手册自己会把你送回上面的通宵约定：
 
 ```text
 /poteto-mode orchestrate the store migration. own it until every package is converted and merged. i'll check in twice a day.

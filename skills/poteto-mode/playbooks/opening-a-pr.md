@@ -31,4 +31,4 @@
 
 **Babysit。** 开一个 PR 并不开始 Babysit。贴出 URL，继续构建。先完成这个阶段或这叠栈。只有当整叠栈存在、并且用户要求时，才单独跑一遍 Babysit。对每个新 PR 都做 Babysit 会拖住构建，并把检查花在稍后的波次会重启的提交上。反馈漂离意图时，推回去。
 
-一个开 PR 的子代理要跑 `interrogate`、`/deslop` 和 `/no-comments`，并贴出 URL。它回到父级，不做 Babysit，除非它是 Autopilot-full 或 Autopilot-stack 的负责人。那位负责人的简报指定了 Babysit 循环，而这正是 `playbooks/babysit.md` 在等的那句请求。负责人在它的代码就绪报告之后开始循环，按它的手册报告可合并或 STACK-READY，并且不受这里以及 `playbooks/babysit.md` 里那些「等到整叠栈建好才 Babysit」的规则约束。
+一个开 PR 的子代理要跑 `/deslop` 和 `/no-comments`，并贴出 URL。它回到父级，不做 Babysit，除非它是 Autopilot-full 或 Autopilot-stack 的负责人。那位负责人的简报指定了 Babysit 循环，而这正是 `playbooks/babysit.md` 在等的那句请求。负责人在它的代码就绪报告之后开始循环，报告可合并，并且不受这里以及 `playbooks/babysit.md` 里那些「等到整叠栈建好才 Babysit」的规则约束。

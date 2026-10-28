@@ -84,7 +84,7 @@ morning.
 | [自主运行](./skills/poteto-mode/playbooks/autonomous-run.md) | 把一个长任务一路推进到完成，中途不停。 |
 | [编排](./skills/poteto-mode/playbooks/orchestrate.md) | 交给单独一个协调者对话的常设项目：跨多日、许多堆叠的 PR、成队的子 agent。 |
 | [autopilot-full](./skills/poteto-mode/playbooks/autopilot-full.md) | 把相互独立的 PR 跑到已合并，每个 PR 一个负责人。一次 swarm 验证每一个代码就绪的 head，此后对补丁的每一次改动都重新检查一次。 |
-| [autopilot-stack](./skills/poteto-mode/playbooks/autopilot-stack.md) | 构建并验证一条线性的基分支栈，供操作者评审并合入。 |
+| [autopilot-stack](./skills/poteto-mode/playbooks/autopilot-stack.md) | 去掉合并的 autopilot-full。构建并验证 PR，供操作者评审并合入，一个 PR 只叠在它所基于的那个 PR 上。 |
 | [会话接手](./skills/poteto-mode/playbooks/session-pickup.md) | 恢复或接手先前某个 agent 进行中的工作。 |
 | [安全暂停](./skills/poteto-mode/playbooks/pause-safely.md) | 干净地挂起进行中的工作，以便日后恢复。 |
 | [多阶段计划](./skills/poteto-mode/playbooks/multi-phase-plan.md) | 跨多个阶段或堆叠 PR 的工作。 |
@@ -132,12 +132,12 @@ morning.
 | [`/why`](./skills/why/SKILL.md) | 你想知道为什么某样东西要做成这样。它在运行时发现可用的 MCP，并并行查询每一类证据（源码管理、议题跟踪、长篇文档、实时聊天、基础设施可观测性、错误跟踪、分析数仓）。 |
 | [`/recall`](./skills/recall/SKILL.md) | 你正在开始或恢复工作，想把你在某个话题上的近期上下文，从你自己的聊天历史和共享记录里重建出来，交回一份紧凑的当前状态简报。 |
 | [`/ketchup`](./skills/ketchup/SKILL.md) | 你想知道这次聊天自你上一条消息以来变了什么，用白话和小图呈现，并把每一件正等你处理的事项列出来，只凭这条回复就能做决定，哪怕这会让回复变长。 |
-| [`/ketchup-video`](./skills/ketchup-video/SKILL.md) | 你想把 `/ketchup` 的进度补课做成一段无声的幻灯片短视频，正等你处理的那些事项以文字放在下面。 |
+| [`/ketchup-video`](./skills/ketchup-video/SKILL.md) | 你想把 `/ketchup` 的进度补课做成一段带字幕的幻灯片短视频，正等你处理的那些事项以文字放在下面。 |
 | [`/blast-radius`](./skills/blast-radius/SKILL.md) | 你有一处看起来很小的改动，想知道它还可能弄坏别的什么，并且那个让它安全的唯一事实是靠运行代码证明的，而不是断言出来的。 |
 | [`/architect`](./skills/architect/SKILL.md) | 你正要写跨过函数边界的代码，想先把调用方的用法、类型和模块形状定下来。 |
 | [`/arena`](./skills/arena/SKILL.md) | 你想对同一件事做 N 次并行尝试，然后取每一份里最好的部分。 |
 | [`/swarm`](./skills/swarm/SKILL.md) | 你想要 N 个并行工作者处理不同的切片或赛跑，然后得到一份汇总报告。 |
-| [`/interrogate`](./skills/interrogate/SKILL.md) | 你有一份 diff，想让不同的模型试着打破它，包括一个严格的代码质量视角。 |
+| [`/interrogate`](./skills/interrogate/SKILL.md) | 你有一份 diff，想让不同的模型试着打破它，只保留一次运行证明了的发现。 |
 | [`/automate-me`](./skills/automate-me/SKILL.md) | 你想要一个属于自己的 `-mode` skill，根据你实际的工作方式起草。 |
 | [`/make-bot-ui`](./skills/make-bot-ui/SKILL.md) | 你想要一个页面或仪表盘，上面的按钮通过 webhook 唤醒一个 Grok Bot，包括发送方密钥的交接和 Tailscale。 |
 | [`/setup-pstack`](./skills/setup-pstack/SKILL.md) | 你想按角色挑选 pstack 使用哪些模型。它检测你的模型并写一条配置规则。 |
@@ -154,7 +154,7 @@ morning.
 | [`/maintain-verification-skill`](./skills/maintain-verification-skill/SKILL.md) | 你的 verify skill 的功能地图已经相对应用发生漂移。一次源码波次加上一次实机走查，最多一个 PR 的已证实修正。 |
 | [`/create-formal-verification-skill`](./skills/create-formal-verification-skill/SKILL.md) | 测试够不到那个会打破竞态、重试、状态机、解析器或不安全代码的情形。用合适的工具验证一条性质，并生成一个项目本地的 skill，在每次改动时重新检查它。 |
 | [`/maintain-formal-verification-skill`](./skills/maintain-formal-verification-skill/SKILL.md) | 你的形式化验证所覆盖的代码自上次检查以来变了。更新模型、harness 或性质以匹配代码，重新运行，并说明每一次失败是验证侧的漂移，还是代码里的 bug。 |
-| [`/statechart`](./skills/statechart/SKILL.md) | 行为的负责人需要看见它，而不是去读一份规格。把用户所见画成一张从 TLA+ 模型生成的 Mermaid 状态图，把每个状态标为可用、仍然错误、或已被你打开的 PR 修好，并把 TLC 找到的每个 bug 画成一条编号路径。也可以把一张已经谈妥的图变成 TLA+ 骨架，或对照一份已有规格审计代码。 |
+| [`/statechart`](./skills/statechart/SKILL.md) | 行为的负责人需要看见它，而不是去读一份规格。检查一个 TLA+ 模型，把用户所见画成一张 Mermaid 状态图，标出每一个打破规则的状态，并给出到达每一个的最短路径。 |
 | [`/unslop`](./skills/unslop/SKILL.md) | 你在清理文字。去掉 AI 的痕迹。 |
 | [`/bro`](./skills/bro/SKILL.md) | 你想把上一条消息用普通人的语言重说一遍，不要行话。 |
 | [`/technical-writing`](./skills/technical-writing/SKILL.md) | 分层的文档标准（Diátaxis + Google developer style + STE + Global English），用于文档、RFC、readme、PR 描述和提交说明。 |

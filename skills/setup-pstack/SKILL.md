@@ -28,7 +28,7 @@ description: 配置 pstack 按角色使用哪些模型，以及用多大的推�
 
 **(b) 应用它。** 从技能默认值建立工作表，并且在重新运行时保留任何你按家族、列表或别名（`inherit-parent`、`auto`）改过的角色。`unlimited`、`large`、`medium` 和 `small` 把每一个真实 slug 的力度 token，包括评审组条目，设为 `max`、`xhigh`、`high` 或 `medium`。力度 token 是最后一个 token，或尾部 `fast` 之前的那一个，位于阶梯 `max` > `xhigh` > `high` > `medium` > `low` 上。如果结果不是一个检测出来的 slug，就用同一家族里力度不高于目标、且力度最高的那个检测出来的 slug，否则把该角色标为需要选择。`inherit-parent` 和 `auto` 不变。因此 `unlimited` 把 `claude-opus-5-5-xhigh` 变成 `claude-opus-5-5-max`。Grok 的 slug 最高到 `xhigh`，所以在 `unlimited` 下，回退把 Grok 放在 `xhigh`，并保持 `grok-4.7-xhigh-fast` 原样。`large` 保持两者的默认值。`small` 把它们变成 `claude-opus-5-5-medium` 和 `grok-4.7-medium-fast`。
 
-**(c) 展示角色并确认。** 展示每一个角色及其模型，把任何不在检测集合里的真实 slug 标为需要选择。也列出第 2 步丢掉的每一行。询问是按原样接受，还是更改特定角色，选项为检测出来的模型加上 `inherit-parent` 和 `auto`（两者的意思都是：这个角色跑在父对话的模型上，这就是 Auto 用户保持在 Auto 上的方式）。优先用 AskQuestion，而不是自由文本。对于评审组角色（arena runners、architect runners、interrogate reviewers），值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度决定数量。`arena cross-judge pool` 也是一个列表，但 Arena 从中选出一个值，其模型家族在可能时与父代理不同。`swarm workers` 是每个工作单元的默认模型，除非一场竞赛或比较为每一臂指定了另一个模型。
+**(c) 展示角色并确认。** 展示每一个角色及其模型，把任何不在检测集合里的真实 slug 标为需要选择。也列出第 2 步丢掉的每一行。询问是按原样接受，还是更改特定角色，选项为检测出来的模型加上 `inherit-parent` 和 `auto`（两者的意思都是：这个角色跑在父对话的模型上，这就是 Auto 用户保持在 Auto 上的方式）。优先用 AskQuestion，而不是自由文本。对于评审组角色（arena runners、architect runners、interrogate reviewers），值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度决定数量。`arena cross-judge pool` 也是一个列表，但 Arena 只跑一个评判者。它按列表顺序只试与父模型不同家族的值，所以按偏好排好顺序。`inherit-parent` 或 `auto` 的值从不评判。`swarm workers` 是每个工作单元的默认模型，除非一场竞赛或比较为每一臂指定了另一个模型。
 
 ### 4. 校验
 

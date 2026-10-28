@@ -32,7 +32,7 @@ disable-model-invocation: true
 
 写一个项目本地的 skill，frontmatter 里点名这个区域，并说明什么时候用它。没有 frontmatter，这个 skill 永远不会注册。只靠这个 skill，下一个 agent 就必须能判断一次改动有没有碰到已验证的代码、跑这项检查、区分真正的缺陷和建模错误，并在改动是有意的时候更新验证。把覆盖记录和同步 commit 放进 skill，并告诉下一个 agent：只有确认验证描述的是新 commit 上的代码之后，才把同步 commit 往前移。用这个仓库真实的命令、路径和名词，不要留占位符。
 
-如果检查是一个 TLA+ 模型，告诉下一个 agent 用 pstack 的 [`/statechart`](../statechart/SKILL.md) skill 阅读每一个结果。它把检测器找到的每一处不变量违反，用白话显示成最短路径，并显示一次改动修好了其中哪些违反。检查通过时，`/statechart` 会画出系统如何在状态之间移动。用名字引用 `/statechart`。它的命令、选项和文件路径会随版本和机器变化，所以一个都不要抄进生成的 skill 或它的脚本。
+如果检查是一个 TLA+ 模型，告诉下一个 agent 用 pstack 的 [`/statechart`](../statechart/SKILL.md) skill 阅读每一个结果。它把检测器找到的每一处不变量违反，用白话显示成最短路径。检查通过时，`/statechart` 会画出系统如何在状态之间移动。用名字引用 `/statechart`。它的命令、选项和文件路径会随版本和机器变化，所以一个都不要抄进生成的 skill 或它的脚本。
 
 ## 移交之前先证明
 

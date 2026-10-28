@@ -33,7 +33,7 @@
 
 ## 审查与发布
 
-- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` 被驳回的那些也要读。
+- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Dropped 清单也要读。
 - `/create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` 那段代码有合并或重构之后：`/maintain-formal-verification-skill`。
 - `/swarm check every package under <dir> against its check script. one worker per package. one report.`
 - `/poteto-mode open the pr. small ordered commits, evidence in the description.`
@@ -46,6 +46,6 @@
 - `/show-me-your-work catch me up on what you did last night.` 先读它的 Attention 一节。
 - `/ketchup` 帮你跟上这次对话中你上一条消息以来的内容，并列出每一个正等着你的决定。
 - `/poteto-mode full autopilot on this queue. each item is independent.`
-- `/poteto-mode autopilot these changes but stack them, don't ship. i'll land the stack.`
+- `/poteto-mode autopilot these changes, but don't merge. i'll land them.`
 - `/reflect capture what we learned so the next run doesn't repeat it.` 只批准那些会改变未来某个决定的编辑。
 - `/bro` 用白话把上一条回复再说一遍。

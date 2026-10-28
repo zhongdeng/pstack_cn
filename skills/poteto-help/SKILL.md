@@ -73,7 +73,7 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 | 理解一处变更或一个子系统，讲得明白 | [`/teach`](../teach/SKILL.md) |
 | 跟上他们自己在某个话题上最近的工作 | [`/recall`](../recall/SKILL.md) |
 | 跟上这次对话里自他们上一条消息以来的变化，用白话和少量图示，每一项正等着他们的事项都列出来，并且只靠回复就能决定 | [`/ketchup`](../ketchup/SKILL.md) |
-| 像 `/ketchup` 那样跟上，用一段幻灯片短静音视频，等待中的决定作为它下面的文字 | [`/ketchup-video`](../ketchup-video/SKILL.md) |
+| 像 `/ketchup` 那样跟上，用一段带字幕的幻灯片短视频，等待中的决定作为它下面的文字 | [`/ketchup-video`](../ketchup-video/SKILL.md) |
 | 知道一个小 diff 在它自身之外可能弄坏什么 | [`/blast-radius`](../blast-radius/SKILL.md) |
 | 在跨越函数边界的代码之前，先定下类型和模块形状 | [`/architect`](../architect/SKILL.md) |
 | 对同一份任务书做几次尝试，合并成最好的那一份 | [`/arena`](../arena/SKILL.md) |
@@ -89,7 +89,7 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 | 把一项验证技能及其功能地图重新对齐到应用 | [`/maintain-verification-skill`](../maintain-verification-skill/SKILL.md) |
 | 形式化地验证竞态、不变量或其他测试很少达到的性质 | [`/create-formal-verification-skill`](../create-formal-verification-skill/SKILL.md) |
 | 在它所覆盖的代码变更之后，把形式化验证重新对齐，并弄清一次失败是漂移还是缺陷 | [`/maintain-formal-verification-skill`](../maintain-formal-verification-skill/SKILL.md) |
-| 向产品经理或设计师展示用户所看到的、由模型核对过的图，每个缺陷画成一条带编号的路径，把一张商定的图变成 TLA+ 骨架，或对照它的 TLA+ 规格审计代码 | [`/statechart`](../statechart/SKILL.md) |
+| 向产品经理或设计师展示用户所看到的、由 TLA+ 模型核对过的图，以及到达每一个打破规则的状态的最短路径 | [`/statechart`](../statechart/SKILL.md) |
 | 在报告一个性能数字或据以行动之前先核验它 | [`/benchmark-checklist`](../benchmark-checklist/SKILL.md) |
 | 跑一项大的或横切的变更，或一项在人离开之后再来审查的变更 | [`/figure-it-out`](../figure-it-out/SKILL.md) |
 | 在一次运行期间保持一份决策日志，并在之后审查它 | [`/show-me-your-work`](../show-me-your-work/SKILL.md) |
@@ -125,7 +125,7 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 - 「落地这个栈」运行 Shipping。
 - 「接管这个分支」运行 Session pickup。
 - 「安全暂停」运行 Pause safely。
-- 「对这个队列全自动驾驶」运行 Autopilot-full。「把它们叠成栈，先不要发布」运行 Autopilot-stack。
+- 「对这个队列全自动驾驶」运行 Autopilot-full。「自动驾驶，先不要合并」运行 Autopilot-stack。
 - 「跑 eval 行动手册」运行 Eval。
 
 没有 `/poteto-mode` 时，像「照看这个 pr」这样的说法可能会改为启动 Cursor 自己的、做同一件事的技能。[`poteto-mode`](../poteto-mode/SKILL.md) 的 Playbooks 一节列出每一份行动手册以及它何时适用。[指南第 6 页](../../docs/guide/06-verify-and-ship.md) 涵盖开 PR、照看和落地 PR。

@@ -28,7 +28,7 @@
 /arena take my prompt to the arena verbatim. i want to compare their proposals with yours.
 ```
 
-[`/arena`](../../skills/arena/SKILL.md) 是底下的通用工具。N 个子 agent 并行尝试同一份设计或代码简报，每一个写到自己的工作树或目录。一个只读裁判，在你的配置允许时用另一个模型族，按一份评分标准给每个候选打分。协调者把每个候选从头读到尾，选定一份底稿，从落选者那里嫁接进最好的想法，并验证结果。
+[`/arena`](../../skills/arena/SKILL.md) 是底下的通用工具。N 个子 agent 并行尝试同一份设计或代码简报，每一个写到自己的工作树或目录。一个来自另一个模型族的只读裁判，按一份评分标准给每个候选打分。当没有其他家族的模型能跑时，协调者跳过裁判，自己选定底稿。协调者把每个候选从头读到尾，选定一份底稿，从落选者那里嫁接进最好的想法，并验证结果。
 
 ```mermaid
 flowchart LR
@@ -66,9 +66,9 @@ flowchart LR
 /interrogate the whole branch, but skeptically. no nitpicks unless it's an actual bug or regression.
 ```
 
-[`/interrogate`](../../skills/interrogate/SKILL.md) 把同一份 diff、意图和评分标准发给不同模型族上的评审者。模型多样性就是要点。不同的模型有不同的盲区，所以两个模型各自独立提出的发现是高置信信号。主评审把一切分进 `Act on`、`Consider`、`Noted` 和 `Dismissed`，每一次驳回都附理由，并且不会自动应用任何东西。
+[`/interrogate`](../../skills/interrogate/SKILL.md) 把这次改动及其意图交给配置好的模型上的对抗者，每一个都试着用一次针对真实代码的运行来打破它。对抗者找到的失败各不相同。一项发现只有在重跑它的命令时显示出一次破坏意图的失败，才会留下来。报告列出每一项已验证的发现以及找到它的对抗者，然后是每个对抗者丢掉了什么以及为什么，并且什么都不应用。
 
-驳回也要读。主评审是一位务实的资深工程师，不是神谕，你可以推翻它。
+Dropped 清单也要读。你可以推翻这份裁决。
 
 ## 做原型，而不是辩论
 
@@ -86,7 +86,7 @@ flowchart LR
 /poteto-mode we need rate limiting for external webhooks. /architect it first, and answer open questions with prototypes. let me review before proceeding.
 ```
 
-不要把评审者花在一份抽象计划上。`/interrogate` 属于 diff。把对抗式评审指向一份背后没有代码的计划，评审者会发明出永远不会发生的理论上的风险和边界情形。让原型把问题定下来，再评审做出来的东西。
+不要把对抗者花在一份抽象计划上。`/interrogate` 丢掉每一次运行没有证明的发现，所以一份背后没有代码的计划，几乎没有什么可供它们打破。让原型把问题定下来，再评审做出来的东西。
 
 ## 共享代码先写 README
 

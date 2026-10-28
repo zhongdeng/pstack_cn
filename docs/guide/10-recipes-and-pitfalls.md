@@ -66,7 +66,7 @@ ask /arena for a second opinion on this thread and our approach
 /interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's an actual bug or regression in behavior.
 ```
 
-这些限定语在做真正的工作。“don't change anything yet” 让它保持只读，而吹毛求疵那条规则预先滤掉噪音，这样 `Act on` 里的发现才值得你的时间。
+这些限定语在做真正的工作。“don't change anything yet” 让它保持只读，而吹毛求疵那条规则预先滤掉噪音，这样已验证的发现才值得你的时间。
 
 ## 通过一个失败的测试修 bug
 
@@ -158,7 +158,7 @@ apply prove it works. show me the real output, not the build log.
 
 [`/ketchup`](../../skills/ketchup/SKILL.md) 用白话告诉你自你上一条消息以来变了什么，然后列出每一件正等你处理的事，并带上它的选择、证据和风险。它在报告时什么都不改。
 
-想改为看着补课，运行 [`/ketchup-video`](../../skills/ketchup-video/SKILL.md)。它用一段无声的幻灯片短视频展示发生了什么，并把正等你处理的事项以文字列在下面。
+想改为看着补课，运行 [`/ketchup-video`](../../skills/ketchup-video/SKILL.md)。它用一段带字幕的幻灯片短视频展示发生了什么，并把正等你处理的事项以文字列在下面。
 
 ## 陷阱
 
@@ -172,7 +172,7 @@ apply prove it works. show me the real output, not the build log.
 - **信任一个未核验的数字。** 热缓存或一条被跳过的代码路径可以伪造一次加速。在数字去任何地方之前运行 `/benchmark-checklist`。
 - **手工纠正同一个错误。** 对话里的一次纠正只帮一次运行。`/correct` 修好仓库，让以后的运行不再重复它。
 - **用 `/arena` 做覆盖。** `/arena` 重复一份设计或代码简报，然后选定底稿并嫁接最好的部分。`/swarm` 划分切片或预先声明的赛跑臂，并汇总成一份报告。
-- **接受每一条评审评论。** 机器人和人都会把真正抓到的问题和噪音放在同一个列表里。`/interrogate` 把发现分进采取行动和驳回的桶，并附理由，两种你都可以推翻。
+- **接受每一条评审评论。** 机器人和人都会把真正抓到的问题和噪音放在同一个列表里。`/interrogate` 只保留重跑所证明的发现，并列出它丢掉了什么以及为什么，两种你都可以推翻。
 - **把 `auto` 当成模型 slug。** `auto` 和 `inherit-parent` 的意思是“省略模型字段，让子 agent 继承父对话的模型”。[安装](./01-setup.md)讲这些角色。
 - **凭一次全绿的构建报告成功。** 构建证明它能编译。去要真实的命令、流程、存下来的值或性能分析，并期望回复里有证据。
 - **凭空手写一份 `SKILL.md`。** 让它走[编写或修改 skill 行动手册](../../skills/poteto-mode/playbooks/authoring-a-skill.md)，这样校验和评审才会发生。

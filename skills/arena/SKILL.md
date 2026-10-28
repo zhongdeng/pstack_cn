@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 1. 写明每个候选正在产出的产物。
 2. 推导评分标准，3 到 6 条可打分的具体标准，说明成功在*这项*任务上是什么样。它是阶段 D 里挑选者的工具。候选只看得到任务。
-3. 选定 runner。用 `~/.cursor/rules/pstack-models.mdc` 里的 `arena runners` 那一行。规则或那一行缺失时，默认在 `claude-opus-5-5-xhigh` 和 `grok-4.7-xhigh-fast` 上各来一个。这一行或交叉评判那一行里的 `auto` 或 `inherit-parent` 条目表示父模型，所以对它省略 `model`。如果 Task 工具拒绝了某个配置好的条目，就让这个席位跑在它所属家族的默认模型上，并说明这一点。家族按前缀划分：`claude-*`，以及 `grok-*`（含 `cursor-grok-*` 和 `composer-*`）。被拒绝的 `composer-*` 条目改跑 `grok-4.7-xhigh-fast`。没有匹配的家族时，用 `claude-opus-5-5-xhigh`。如果它拒绝了某个默认值，就用报错信息里同一家族最接近的合法 slug。arena 覆盖多个设计方向时，多拉几个 runner。工作的瓶颈在生成、而不在判断时，同一个模型用 N 次。按 **poteto-mode** skill 的 Subagents 一节，为这项工作给每个子 agent 选定推理档位，以及 fast 或 standard 速度。
+3. 选定 runner。用 `~/.cursor/rules/pstack-models.mdc` 里的 `arena runners` 那一行。规则或那一行缺失时，默认在 `claude-opus-5-5-xhigh` 和 `grok-4.7-xhigh-fast` 上各来一个。这一行里的 `auto` 或 `inherit-parent` 条目表示父模型，所以对它省略 `model`。如果 Task 工具拒绝了某个配置好的条目，就让这个席位跑在它所属家族的默认模型上，并说明这一点。家族按前缀划分：`claude-*`，以及 `grok-*`（含 `cursor-grok-*` 和 `composer-*`）。被拒绝的 `composer-*` 条目改跑 `grok-4.7-xhigh-fast`。如果该家族没有默认值，或者 Task 工具拒绝了那个默认值，就用报错信息里同一家族最接近的合法 slug，没有时就丢掉这个席位并说明。丢掉的席位让 runner 少于两个时，补 runner 直到有两个，那一行只有一个条目时补到一个。每个补上的 runner 跑在某个还在的 runner 的模型上，一个都不剩时省略 `model`，让它跑在父模型上，并说明。arena 覆盖多个设计方向时，多拉几个 runner。工作的瓶颈在生成、而不在判断时，同一个模型用 N 次。按 **poteto-mode** skill 的 Subagents 一节，为这项工作给每个子 agent 选定推理档位，以及 fast 或 standard 速度。
 4. 给每个候选自己的产出位置（能用 git worktree 就用，否则用 `/tmp/arena-<slug>/candidate-<n>/`），见 **separate-before-serializing-shared-state** 原则 skill。
 
 ## 阶段 B：铺开
@@ -25,11 +25,11 @@ disable-model-invocation: true
 
 ## 阶段 C：交叉评判
 
-阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行里选一个模型。规则或那一行缺失时，从 `claude-opus-5-5-xhigh` 和 `grok-4.7-xhigh-fast` 里选。优先选与父模型不同的模型家族。在那个模型上拉起一个只读的评判子 agent。它按路径标签看到评分标准和各候选，给每条标准打分，并推荐一份底稿、附上理由。它和你在阶段 D 的阅读并行进行。候选还在写的时候，不要拉起它。
+阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行里选一个模型。规则或那一行缺失时，从 `claude-opus-5-5-xhigh` 和 `grok-4.7-xhigh-fast` 里选。拉起一个只读的评判子 agent。评判者绝不会来自父模型的家族，家族按阶段 A 第 3 步的定义。只按池的顺序试其他家族的条目。`auto` 或 `inherit-parent` 条目就是父模型，所以它从不评判。用默认池时，Claude 父模型得到 `grok-4.7-xhigh-fast`。任何其他家族的父模型先得到 `claude-opus-5-5-xhigh`。如果 Task 工具拒绝了某个条目，就用报错信息里同一模型最接近的档位或速度的合法 slug，没有时就移到下一个条目。如果没有其他家族的条目能跑，就用同样的方式试默认池里其他家族的条目。那些也没有一个能跑时，跳过评判者，在阶段 D 里独自选定底稿，并说明。如果你不知道父模型是什么，就按池的顺序试池里的真实 slug，并说明家族检查没有跑。评判者按路径标签看到评分标准和各候选，给每条标准打分，并推荐一份底稿、附上理由。它和你在阶段 D 的阅读并行进行。候选还在写的时候，不要拉起它。
 
 ## 阶段 D：选定底稿
 
-选定之前把每份候选从头到尾读完。按评分标准逐条打分，不要凭整体感觉，并和交叉评判对照。对底稿意见一致，就确认这个选择。意见不一致，说明你们其中一个有偏见，或者评分标准含糊。决定之前把两份理由都读完。
+选定之前把每份候选从头到尾读完。按评分标准逐条打分，不要凭整体感觉，并在阶段 C 跑了交叉评判时与它对照。对底稿意见一致，就确认这个选择。意见不一致，说明你们其中一个有偏见，或者评分标准含糊。决定之前把两份理由都读完。
 
 选一份未来的维护者最容易扩展、又不会打破不变量的底稿。两者感觉打平时，按 Laziness Protocol，优先选更干净的边界或更小的 API。
 
@@ -45,4 +45,4 @@ disable-model-invocation: true
 
 ## 产出
 
-一份综合后的产物，旁边附一份简短的综合说明，点名底稿和理由、交叉评判的结论、每一处嫁接及其来源候选、拒绝了什么以及为什么、任何收敛或掉队，以及验证结果。
+一份综合后的产物，旁边附一份简短的综合说明，点名底稿和理由、交叉评判的结论或阶段 C 跳过了评判者、每一处嫁接及其来源候选、拒绝了什么以及为什么、任何收敛或掉队，以及验证结果。

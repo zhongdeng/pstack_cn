@@ -5,7 +5,7 @@
 1. 当改动是一两个文件、做法明显时，跳过计划。这样说，然后停。
 2. 写下来之前，用原型把未决问题定下来。每一个都跑 `playbooks/prototype.md`。把分支、SHA 和截图留给附录 A。只向操作者问那些没有任何一次运行能裁定的产品或偏好决定。给出选项（**never-block-on-the-human** 原则技能）。
 3. 在子代理里探索，使用 `subagent_type: "poteto-agent"`，并按子代理一节给出明确模型（**guard-the-context-window** 原则技能）。按子代理一节，为每个子代理选择这项工作所需的推理档位，以及 fast 或 standard 速度。每个返回文件指针、惯例、测试命令和入口。不要内联倾倒。
-4. 把下面的骨架复制进计划文件，并填上每一个占位符。除非操作者点名一条路径，否则把文件写在代理存储的 `docs/` 下。按所示顺序保留每一个标题和每一个子块。每个 PR 一节。一个 PR 是一次改动，带它自己的证据（**sequence-verifiable-units** 原则技能）。在 **How to read this** 里点名执行手册。按 `playbooks/autopilot-stack.md` 末尾的规则，在 `playbooks/autopilot-full.md` 和 `playbooks/autopilot-stack.md` 之间选择。常设项目用 `playbooks/orchestrate.md`。
+4. 把下面的骨架复制进计划文件，并填上每一个占位符。除非操作者点名一条路径，否则把文件写在代理存储的 `docs/` 下。按所示顺序保留每一个标题和每一个子块。每个 PR 一节。一个 PR 是一次改动，带它自己的证据（**sequence-verifiable-units** 原则技能）。在 **How to read this** 里点名执行手册。运行可以合并时选 `playbooks/autopilot-full.md`。操作者来合入这些 PR 时选 `playbooks/autopilot-stack.md`。常设项目用 `playbooks/orchestrate.md`。
 5. 完整地按 `/technical-writing` 来写，然后 `/unslop`。正文是一种 Diátaxis 模式，how-to。附录放解释和参考。每个标题说出任务或发现。不要长破折号。不要句中冒号。
 6. 运行 `node pstack/skills/poteto-mode/scripts/check-plan.mjs <plan.md>`，并修掉它打印的每一行（**encode-lessons-in-structure** 原则技能）。
 7. 交回。贴出计划路径和脚本的输出，然后停。执行在操作者明确放行时开始，走计划所点名的执行手册。
@@ -58,13 +58,13 @@ Tests alone are not sufficient verification. A PR is verified only when its unit
 - [ ] Run the repo's lint and typecheck once before the PR-facing push. Push with hooks on.
 - [ ] Run `/deslop` before each commit and `/no-comments` before review.
 - [ ] Triage every Bugbot and security-reviewer comment per `../references/bugbot-triage.md`.
-- [ ] Rebase onto current trunk before the code-ready report and babysit. Keep that merge base in fix rounds. Rebase again only at merge prep, on a `git merge-tree` conflict with trunk, or on a CI failure that comes from a change on trunk.
+- [ ] Rebase onto current trunk before the code-ready report and babysit. Keep that merge base in fix rounds. Rebase again only at merge prep, on a `git merge-tree` conflict with trunk, on a CI failure that comes from a change on trunk, or when a known concurrent change to the same files lands.
 
 ### Verdict and merge, for every PR
 
-- [ ] A full swarm runs once, at the code-ready head. Another full swarm runs only for new behavior, a redesign, or a large new diff. A rebase, a merge-conflict resolution, or a minor fix gets a single verifier at the new head. Run each full swarm per `pstack/skills/swarm/SKILL.md`. One gates lane. The ten live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. Two or more audit lanes, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
-- [ ] Clean only when every lane is `PASS`. Findings go back to the owner, including a defect that a lane filed as a note. A new head gets a fresh verdict, except for results that stay valid under the patch-id rule in `playbooks/shipping.md`.
-- [ ] <The merge or append rule from the execution playbook, with the patch-id rule from `playbooks/shipping.md`.>
+- [ ] A full swarm runs once, at the code-ready head. Another full swarm runs only for new behavior, a redesign, or a large new diff. A rebase, a merge-conflict resolution, or a minor fix gets a single verifier at the new head, and a wording-only change gets none. Run each full swarm per `pstack/skills/swarm/SKILL.md`. One gates lane. The ten live lanes from the PR's **Verify, live** block. The perf lane from its **Verify, perf** block. Two or more audit lanes, each with its own focus, that read the diff and the receipts and distrust the PR body. The root audits the receipts in the merge-ready report before the verdict.
+- [ ] Judge every finding by the execution playbook's blocking rule. The verdict is clean when none blocks. A failure on trunk behavior in a lane marked `Regression lane against trunk.` is recorded against trunk and does not block the PR. A new head gets a fresh verdict, except for results that stay valid under the patch-id rule in `playbooks/shipping.md`.
+- [ ] <The merge or handoff rule from the execution playbook, with the patch-id rule from `playbooks/shipping.md`.>
 
 ### Boot recipe, for every live lane
 
