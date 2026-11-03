@@ -1,10 +1,10 @@
 # TypeScript 模式
 
-`SKILL.md` 里每条规则的代码示例。底层原则与语言无关。见 **type-system-discipline** 和 **boundary-discipline** 原则技能。
+`SKILL.md` 里每条规则的代码示例。底层原则与语言无关。参见 **type-system-discipline** 和 **boundary-discipline** 原则技能。
 
 ## 品牌类型
 
-给原语打上品牌，使它们不会被混用。在边界校验一次。下游代码信任这个类型。
+给原始类型打上品牌，让它们没法互相混用。在边界处校验一次。下游代码直接信任这个类型。
 
 ```ts
 type AgentId = string & { readonly __brand: "AgentId" };
@@ -23,11 +23,11 @@ function focusAgent(id: AgentId): void {
 }
 ```
 
-匹配 `readonly __brand: 'X'` 这个形状。不要另起一套约定。
+照着 `readonly __brand: 'X'` 这个形状来。别自己发明新约定。
 
-## 可区分联合
+## 可辨识联合
 
-用一个字面量判别式来建模变体。每个变体共享字段名，并且每个变体的值唯一，所以不可能的组合无法被表示。
+用字面量判别字段来建模各个变体。每个变体共用同一个字段名，且每个变体的值都唯一，所以不可能的组合根本表示不出来。
 
 ```ts
 // Don't. Boolean + optionals lets contradictory states exist.
@@ -40,11 +40,11 @@ type DiffState =
   | { kind: "error"; error: string };
 ```
 
-选定一个判别式名字（`kind`、`type`、`tag`），并坚持用它。
+挑一个判别字段名（`kind`、`type`、`tag`），然后一直用它。
 
 ## 构造式建模
 
-用全都合法的部件来建造类型，而不是用运行时检查去限制一个松散类型。
+用全都合法的部件把类型拼出来，而不是拿运行时检查去限制一个宽松类型。
 
 非空，用可变元组：
 
@@ -63,19 +63,19 @@ function pickWinner(entries: NonEmpty<string>): string {
 }
 ```
 
-当到来的是普通 `T[]` 时，用一个守卫收窄一次。这个事实随后就在类型里旅行：
+如果传进来的是普通 `T[]`，用守卫收窄一次。这个事实之后就跟着类型一起走：
 
 ```ts
 const isNonEmpty = <T>(arr: T[]): arr is NonEmpty<T> => arr.length > 0;
 ```
 
-偶数长度，做成对：
+偶数长度，用成对：
 
 ```ts
 type Pairs<T> = [T, T][];
 ```
 
-时间区间，做成起点加时长：
+时间范围，用起点加时长：
 
 ```ts
 // Don't: a comment holds the invariant
@@ -85,17 +85,17 @@ type TimeRange = { start: Date; end: Date }; // start <= end
 type TimeRange = { start: Date; durationMs: number };
 ```
 
-让 `durationMs` 保持普通数字。只在一个原始数字可能被传到需要时长的地方时才给它打品牌（见品牌类型），不要出于反射。选出使坏状态无法被构造的表示，然后在上面暴露你需要的读法（`pairs.flat()`、一个 `rangeEnd()` 辅助函数）。
+`durationMs` 保持普通 number。只有当原始 number 可能被传到本该是时长的地方时才给它打品牌（见品牌类型），别条件反射地打。选那种让坏状态构造不出来的表示，然后在上面暴露你需要的读法（`pairs.flat()`、一个 `rangeEnd()` 辅助函数）。
 
-## 最简单的全函数类型
+## 最简全函数类型
 
-不要把一切都收紧。当其上的每个操作都是全函数时，继续用 `T[]`：
+别什么都加强。当每个操作都是全函数时，就保留 `T[]`：
 
 ```ts
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0); // [] is 0, fine
 ```
 
-当松散类型迫使你在使用点说谎时才收紧。迹象是 `!`、`arr[0] as T`，以及一个「不该发生」的抛出：
+当宽松类型逼得使用处不得不说谎时才加强。信号是 `!`、`arr[0] as T`，以及一个"不该发生"的 throw：
 
 ```ts
 // Don't: partiality smuggled past the compiler
@@ -109,11 +109,11 @@ function newestSession(sessions: NonEmpty<Session>): Session {
 }
 ```
 
-把结果放宽成 `Session | undefined` 是另一种全函数签名。
+把返回值弱化成 `Session | undefined` 是另一种全函数签名。
 
-## `unknown` 优于 `any`
+## 用 `unknown` 而不是 `any`
 
-外部数据始终是 `unknown`。使用之前先收窄。
+外部数据永远是 `unknown`。用之前先收窄。
 
 ```ts
 // Don't
@@ -131,9 +131,9 @@ function handle(input: unknown) {
 
 外部来源包括 RPC 载荷、`JSON.parse`、`postMessage`、IPC、文件内容、环境变量、数据库结果。
 
-## schema 先于手写守卫
+## 先看 schema，再手写守卫
 
-在为外部数据手写逐属性的类型守卫之前，先找仓库的运行时 schema 库和已有 schema。让一个 schema 拥有校验，并从它推导 TypeScript 类型。不要同时维护一个 schema、一份重复的接口，以及一个可能漂开的守卫。
+给外部数据写逐属性的类型守卫之前，先找仓库里的运行时 schema 库和已有的 schema。让一个 schema 独占校验，并从它推导出 TypeScript 类型。别同时维护一个 schema、一个重复的 interface 和一个会跟它们漂移的守卫。
 
 ```ts
 import { z } from "zod";
@@ -150,11 +150,11 @@ function parseUser(input: unknown): User {
 }
 ```
 
-失败是预期分支时用 `safeParse`。仓库用另一套 schema 库时，用对应的推导辅助。不要为一个守卫新增 schema 依赖。这条规则优先使用代码库已经信任的 schema 体系。
+失败是预期分支时用 `safeParse`。仓库用的是别的 schema 库时，用等价的推导辅助函数。别为了一个守卫新增 schema 依赖。这条规则优先用代码库已经信任的 schema 系统。
 
-## 不要 `as` 断言
+## 不用 `as` 断言
 
-每一个 `as` 都是一次潜在的运行时崩溃。只在类型系统已经核实了这条主张之后才断言。
+每个 `as` 都是一次潜在的运行时崩溃。只有类型系统验证过这个断言之后才能断言。
 
 ```ts
 import { z } from "zod";
@@ -176,7 +176,7 @@ function parseUser(data: unknown): User {
 }
 ```
 
-当类型先行时，用它所证明的类型来标注校验器。编译器随后会拒绝一个证明得比类型少的校验器。从下面的对象里去掉 `name`，赋值就无法编译。
+类型先行时，给校验器标注它要证明的类型。这样编译器会拒绝证明得比类型少的校验器。把下面对象里的 `name` 删掉，赋值就编译不过。
 
 ```ts
 type User = { id: string; name: string };
@@ -184,21 +184,21 @@ type User = { id: string; name: string };
 const userSchema: z.ZodType<User> = z.object({ id: z.string(), name: z.string() });
 ```
 
-把现有代码里的 `as` 重构掉时，找出 TypeScript 无法推断的原因：
+从已有代码里重构掉一个 `as` 时，先弄清 TypeScript 为什么推导不出来：
 
-- 缺少判别式：补上一个，改成可区分联合。
-- 来源类型过宽（例如 `Record<string, unknown>`）：收窄它。
-- 未类型化的边界：用拥有该形状的 schema 来解析。只在没有任何 schema 的地方才加一个。
-- 确实无法表达：用品牌类型或 `satisfies`。
+- 缺判别字段：加一个，改成可辨识联合。
+- 来源类型过宽（比如 `Record<string, unknown>`）：收窄它。
+- 边界没有类型：用拥有这个形状的 schema 来 parse。只在没有 schema 的地方加 schema。
+- 确实表达不出来：用品牌类型或 `satisfies`。
 
-## 收窄的层次
+## 收窄的优先级
 
-从最好到最后手段：
+从最好到最后的兜底：
 
-1. **可区分联合的 switch / if。** 编译器自动收窄。
-2. **`in` 运算符。** `"key" in obj` 收窄到包含该键的变体。
-3. **`typeof` / `instanceof`。** 用于原语和类实例。
-4. **用户定义的类型守卫。** 当前面那些不够时。
+1. **可辨识联合的 switch / if。** 编译器自动收窄。
+2. **`in` 运算符。** `"key" in obj` 收窄到含该键的变体。
+3. **`typeof` / `instanceof`。** 用于原始类型和类实例。
+4. **用户定义的类型守卫。** 上面这些不够用时。
 5. **`as` 断言。** 只在校验之后。
 
 ```ts
@@ -210,7 +210,7 @@ function area(s: Shape): number {
 
 ## 类型守卫
 
-守卫必须真正核实它的主张。一个说谎的守卫比 `as` 更糟。
+守卫必须真的验证这个断言。说谎的守卫比 `as` 更糟。
 
 ```ts
 function isCircle(s: Shape): s is Shape & { kind: "circle" } {
@@ -218,11 +218,11 @@ function isCircle(s: Shape): s is Shape & { kind: "circle" } {
 }
 ```
 
-能用判别式收窄时优先用它。
+能靠判别字段收窄时就优先用它。
 
 ## 穷尽性
 
-在 default 分支里，把判别式赋给一个 `never` 类型的局部变量。
+在 default 分支里，把判别字段赋给一个 `never` 类型的局部变量。
 
 ```ts
 // Value-returning switch
@@ -256,11 +256,11 @@ function handle(s: Shape): void {
 }
 ```
 
-返回值的 switch 用 return 风格，语句式 switch 用 void 风格。
+有返回值的 switch 用 return 风格，语句式 switch 用 void 风格。
 
-## `satisfies` 优于 `as`
+## 用 `satisfies` 而不是 `as`
 
-`satisfies` 做校验，同时不放宽字面量类型。
+`satisfies` 做校验，但不放宽字面量类型。
 
 ```ts
 // Don't. Widens, loses literal types.
@@ -273,15 +273,15 @@ const config = { theme: "dark", cols: 3 } satisfies Config;
 
 ## 边界校验
 
-在数据进入的地方校验一次。内部信任类型。见 **boundary-discipline** 原则技能。
+在数据进来的地方校验一次。内部信任类型。参见 **boundary-discipline** 原则技能。
 
-- **线上格式**（proto、JSON-RPC）：用 `ignoreUnknownFields` 解析，这样向前兼容的改动不会弄坏旧客户端。
-- **持久化的 JSON：** 带版本的 blob，解析外包一层 try/catch。
-- **不要在调用链深处重新校验。**
+- **线格式**（proto、JSON-RPC）：用 `ignoreUnknownFields` 来 parse，这样向前兼容的改动不会弄坏老客户端。
+- **持久化的 JSON：** 带版本号的 blob，parse 外面套 try/catch。
+- **别在调用链深处重复校验。**
 
-## 从 schema 推导的类型
+## 从 schema 推导类型
 
-当 `.proto`、OpenAPI spec、GraphQL schema 或数据库迁移已经定义了形状，从生成的类型推导，而不是复制它们。
+当 `.proto`、OpenAPI 规范、GraphQL schema 或数据库迁移已经定义了一个形状，就从生成的类型推导，别重复定义。
 
 ```ts
 // Don't. Duplicate shape, drifts when the schema changes.
@@ -300,7 +300,7 @@ function renderChecks(s: Pick<ChecksMessage, "totalCount" | "checks">) {
 }
 ```
 
-在写新接口之前，先伸手去用 `Pick`、`Omit`、`Parameters`、`ReturnType`、`Awaited`、`typeof`。
+写新 interface 之前，先想想 `Pick`、`Omit`、`Parameters`、`ReturnType`、`Awaited`、`typeof`。
 
 ## 对象参数
 
@@ -325,4 +325,4 @@ openFile({
 });
 ```
 
-热路径上跳过：逐帧渲染、分词器、解析器，以及任何分配成本要紧的紧循环。
+热路径上跳过：逐帧渲染、tokenizer、parser，以及任何在紧循环里、分配开销要紧的地方。
