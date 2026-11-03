@@ -1,5 +1,5 @@
-# 事故与复盘上下文
+# 事故与复盘背景
 
-- **Linear**：查找标有 `incident`、`sev-*`、`postmortem-action-item`、`reliability` 的工单
-- **Slack**：在目标代码加入前后的日期附近，搜索 `#sev-*` 和 `#incident-*` 频道
-- **Git**：提交说明类似 "fix for incident"、"add defensive check"，或先 "revert" 再 "re-apply with..." 的，是强烈信号
+- **Linear**：找带 `incident`、`sev-*`、`postmortem-action-item`、`reliability` 标签的工单
+- **Slack**：在目标代码加入的时间点前后，搜 `#sev-*` 和 `#incident-*` 频道
+- **Git**：提交信息里出现 "fix for incident"、"add defensive check"、"revert" 后面又跟 "re-apply with..." 这类，都是很强的信号

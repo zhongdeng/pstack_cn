@@ -1,98 +1,98 @@
 ---
 name: why
-description: "用于「X 为什么这样工作」「我们为什么选了 Y」、设计理由、回归、复盘，或有数据支撑的阈值。发现可用的 MCP，并并行查询每一个证据类别（源码控制、议题跟踪、长文文档、实时聊天、基础设施可观测性、错误跟踪、产品分析仓库），然后返回一份带引用的、关于决定和取舍的解读。运行时行为用 how。"
+description: "用于 '为什么 X 要这么做'、'为什么我们选了 Y'、设计理由、回归、复盘，或有数据支撑的阈值。先发现可用的 MCP，再并行查询每一类证据（源码管理、issue 跟踪、长文档、实时聊天、基础设施可观测性、错误跟踪、产品分析数仓），然后返回一份带引用的决策与权衡解读。运行时行为请用 how。"
 disable-model-invocation: true
 ---
 
 # Why
 
-调查代码背后的动机和意图。配套的 `how` 技能回答代码做什么、如何工作。`why` 回答是哪些力量导致了它的形状。
+调查代码背后的动机和意图。配套的 `how` 技能回答代码做了什么、怎么运作。`why` 回答是什么力量把它塑造成了现在这样。
 
-下面每一次派生都点名 `pstack-models.mdc` 规则里的一行角色，以及一个默认值。把 `model` 设成那一行的值，如果规则或那一行缺失，就设成默认值。当值是 `auto` 或 `inherit-parent` 时，不要设置 `model`。如果 Task 工具拒绝一个 slug，就用默认值，并这样说。如果它拒绝默认值，就从它的错误信息里使用同一家族最近的合法 slug。按 **poteto-mode** 技能的子代理一节，为每个子代理选择这项工作所需的推理档位，以及 fast 或 standard 速度。
+下面每一次 spawn 都对应 `pstack-models.mdc` 规则里的一行角色和一个默认值。把 `model` 设成那一行的值；如果规则或那一行缺失，就用默认值。当值是 `auto` 或 `inherit-parent` 时，不要设 `model`。如果 Task 工具拒绝某个 slug，就用默认值并说明这一点。如果它连默认值也拒绝，就从它的报错信息里挑同一家族里最接近的合法 slug。按 **poteto-mode** 技能的 Subagents 一节，为每个子智能体挑选推理级别和 fast 或 standard 速度。
 
-每一次派生都是 `generalPurpose`，并且 `readonly: false`（代理模式）。**不要使用 readonly/Ask 模式。** 它会剥掉 MCP 访问，从而使靠 MCP 的调查者和综合者的引用抽查都失效。调查者仍然不应该写任何东西。
+每次 spawn 都是 `generalPurpose`，`readonly: false`（agent 模式）。**不要用 readonly/Ask 模式。** 它会剥掉 MCP 访问权限，从而让依赖 MCP 的调查员和综合者的引用抽查都失效。调查员仍然不应该写任何东西。
 
-## 操作姿态
+## 工作姿态
 
-作为一个**仔细、谨慎、精确的调查者**来操作。对你知道的和你正在推断的要诚实。阅读 `references/epistemics.md`，那里有完整的置信框架和措辞指南。综合者必须遵循它。
+以**谨慎、小心、精确的调查员**身份工作。对你确知的和你在推断的，要诚实区分。完整的置信度框架和措辞指南见 `references/epistemics.md`。综合者必须遵守它。
 
-## 第 1 步. 理解目标和问题
+## 第 1 步：理解目标和问题
 
-**目标**通常是一块代码、一种模式、一个功能，或一个被点名的设计决定。**问题**通常是一条设计理由、一个取舍、一个推动性的边界情况、一条外部约束、死代码，或一次宽泛的历史清扫。
+**目标**通常是一段代码、一个模式、一个功能，或一个命名的设计决策。**问题**通常是设计理由、权衡、促成它的边界情况、外部约束、死代码，或一次大范围的历史梳理。
 
-如果目标含糊（「why do we do it this way?」，没有清楚的所指），就根据对话上下文做你最好的猜测（打开的文件、最近的编辑、光标位置、刚刚讨论过的东西）。简短说出你的理解，这样如果你偏了，用户可以纠正，然后继续。
+如果目标很模糊（"为什么我们要这么做？"却没有明确所指），就从对话上下文里做最好的猜测（打开的文件、最近的编辑、光标位置、刚讨论过的内容）。简短说明你的理解，让用户能纠正，然后继续。
 
-## 第 2 步. 建立代码锚点
+## 第 2 步：建立代码锚点
 
-在派生调查者之前，就地建好种子上下文：文件路径和行范围、关键符号（函数、类、常量）、最近几次碰到目标的提交、合并提交里的 PR 号（主题行里的 `(#1234)` 模式），以及任何链接的工单 ID。对最后一次触碰的提交运行 `git blame -L <start>,<end> <file>`，对穿过重命名的完整历史加补丁运行 `git log --follow -p -- <file>`，对能看见 PR 号的最近提交运行 `git log --oneline -20 -- <file>`，并运行 `git log -1 --format=%B <commit>` 来提取 PR 号。然后拉取任何有实质内容的提交的 PR 正文和讨论：`gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews`。这个锚点发给每一个调查者和综合者。
+在 spawn 调查员之前，先就地搭好种子上下文：文件路径和行范围、关键符号（函数、类、常量）、最近几次触及目标的提交、合并提交里的 PR 编号（主题行里的 `(#1234)` 模式），以及任何关联的工单 ID。运行 `git blame -L <start>,<end> <file>` 拿最后触及的提交，`git log --follow -p -- <file>` 拿穿越重命名的完整历史和补丁，`git log --oneline -20 -- <file>` 看带 PR 编号的近期提交，`git log -1 --format=%B <commit>` 提取 PR 编号。然后为任何有实质内容的提交拉取 PR 正文和讨论：`gh pr view <number> --json title,body,author,createdAt,mergedAt,labels,closingIssuesReferences,comments,reviews`。这个锚点会发给每个调查员和综合者。
 
-## 第 3 步. 派生并行的调查者
+## 第 3 步：并行 spawn 调查员
 
-**默认做完整的并行调查。** 目标是一张完整的覆盖图，不是一张最小的。把空结果记下来，不要跳过搜索。
+**默认做完整的并行调查。** 目标是完整的覆盖图，不是最小覆盖。把空结果记录下来，不要跳过搜索。
 
 ### 发现
 
-在派生调查者之前，从 Cursor 环境列出可用的 MCP。有可用工具图时就用它。否则检查 Cursor 为已启用的 MCP 服务器所暴露的 `mcps/` 目录。
+在 spawn 调查员之前，从 Cursor 环境里列出可用的 MCP。有可用工具映射就用它。否则检查 Cursor 暴露的 `mcps/` 目录，看哪些 MCP 服务器已启用。
 
-把每一个可用的 MCP 映射到一个证据类别：
+把每个可用的 MCP 映射到一类证据：
 
-1. 源码控制历史
-2. 议题 / 工单跟踪
-3. 长文文档
+1. 源码管理历史
+2. Issue / 工单跟踪
+3. 长文档
 4. 实时团队聊天
 5. 基础设施可观测性
 6. 错误 / 异常跟踪
-7. 产品分析仓库
+7. 产品分析数仓
 
-源码控制始终可以通过 git 和 `gh` 得到。对其余六个，用 MCP 的名字、服务器说明、工具名和资源描述来分类。如果一个 MCP 可以适合多于一个类别，选择与它的主要证据匹配的那个。把含糊的情况记在覆盖图里。
+源码管理总是可以通过 git 和 `gh` 拿到。其余六类，用 MCP 名称、服务器说明、工具名和资源描述来分类。如果一个 MCP 能对上不止一类，选匹配它主要证据的那一类。把有歧义的情况记进覆盖图。
 
-为每一个有匹配 MCP 的类别派生一个调查者，全部放在一条消息里，这样它们并发运行，每个恰好拥有一个工具或 MCP。不要让一个代理覆盖多个 MCP。`model`：`why investigators` 那一行，默认 `grok-4.7-xhigh-fast`。
+每一类只要有匹配的 MCP，就 spawn 一个调查员，全部放在同一条消息里让它们并发运行，每个只负责一个工具或 MCP。不要让一个智能体覆盖多个 MCP。`model`：`why investigators` 那一行，默认 `grok-4.7-xhigh-fast`。
 
-每个调查者的提示是填好的 `references/investigator-prompt.md`，外加：
-- 所选 MCP 的类别手册 `references/sources/<source>.md`，按 `references/source-playbook.md` 里的例子来改编
-- **如果目标代码看起来是防御性的**（空检查、重试逻辑、超时处理、速率限制、功能开关、出口防护、OOM 处理），再加上 `references/sources/incident-postmortem.md`
+每个调查员的提示词是填好的 `references/investigator-prompt.md`，再加上：
+- 所选 MCP 对应的类别作战手册 `references/sources/<source>.md`，从 `references/source-playbook.md` 里的示例改编
+- `references/sources/incident-postmortem.md`，**如果目标代码看起来是防御性的**（空值检查、重试逻辑、超时处理、限流、功能开关、出口防护、OOM 处理）
 - 代码锚点和用户的原始问题
 
-### 调查者名册，每个可用的证据类别一个
+### 调查员名单，每个可用的证据类别一个
 
-下面每一个类别都独特定位来浮现一种形状的「为什么」，写在「最擅长」之后。用它来知道该期待什么回来，在一个类别返回空时点名缺口，并且只在罕见的、可证明无关的情况下，用它来为跳过辩护。
+下面每一类都独特地适合揭示某一种"为什么"，写在"最擅长"之后。用它来预判会拿回什么、在某类返回空时指出缺口，以及只在极少数可证明无关的情况下用来论证跳过。
 
-1. **源码控制**（git 历史、用于 PR 的 `gh`、代码注释、测试）。始终派生，这是唯一保证有的来源。最擅长*审查期间捕获的、实现当时的理由*。
-2. **议题 / 工单跟踪**（例如 Linear、Jira、GitHub Issues、Plane、Shortcut MCP）。最擅长*产品或业务上的驱动因素*。当为什么位于工程之外时最强。
-3. **长文文档**（例如 Notion、Confluence、Google Docs、Coda MCP）。最擅长*长文的设计理由*，在它变成代码之前写下来的。
-4. **实时团队聊天**（例如 Slack、Discord、Microsoft Teams、Mattermost MCP）。最擅长*从未写进文档的实时斟酌*。当源码控制、工单和文档的书面痕迹很薄时尤其重要。
-5. **基础设施可观测性**（例如 Datadog、New Relic、Honeycomb、Grafana、Splunk MCP）。最擅长*推动了这段代码的基础设施和运行时现实*。当目标在对一个基础设施信号作出反应时最强（超时、重试、速率限制、熔断器）。
-6. **错误 / 异常跟踪**（例如 Sentry、Rollbar、Bugsnag、Airbrake MCP）。最擅长*推动了防御性或纠正性代码的那些具体异常和错误轨迹*。对 catch 块、空守卫、类型检查、重试和其他防御最强。
-7. **产品分析仓库**（例如 Databricks、Snowflake、BigQuery、ClickHouse、dbt、Redshift MCP）。最擅长*塑造了这段代码的产品和数据现实*。对被功能开关门控的代码、由实验推动的交付、数据迁移，以及「这个数字是从哪来的」这类问题最强。
+1. **源码管理**（git 历史、用 `gh` 查 PR、代码注释、测试）。总是 spawn，唯一有保证的来源。最擅长*评审过程中记录下来的实现期理由*。
+2. **Issue / 工单跟踪**（例如 Linear、Jira、GitHub Issues、Plane、Shortcut MCP）。最擅长*产品或业务的驱动因素*。当"为什么"在工程之外时最强。
+3. **长文档**（例如 Notion、Confluence、Google Docs、Coda MCP）。最擅长*长篇设计理由*，在变成代码之前就写下来的那种。
+4. **实时团队聊天**（例如 Slack、Discord、Microsoft Teams、Mattermost MCP）。最擅长*从未落到文档里的实时讨论*。当源码管理、工单和文档的纸面痕迹都很薄时尤其重要。
+5. **基础设施可观测性**（例如 Datadog、New Relic、Honeycomb、Grafana、Splunk MCP）。最擅长*促成这段代码的基础设施和运行时现实*。当目标是在响应某个基础设施信号（超时、重试、限流、熔断）时最强。
+6. **错误 / 异常跟踪**（例如 Sentry、Rollbar、Bugsnag、Airbrake MCP）。最擅长*促成防御性或纠正性代码的那些具体异常和错误轨迹*。对 catch 块、空值防护、类型检查、重试和其他防御措施最强。
+7. **产品分析数仓**（例如 Databricks、Snowflake、BigQuery、ClickHouse、dbt、Redshift MCP）。最擅长*塑造了代码的产品和数据现实*。对开关控制的代码、实验驱动的发布、数据迁移和"这个数字从哪来"的问题最强。
 
-### 何时跳过一个调查者
+### 什么时候跳过某个调查员
 
-只有带着一条**明确的、写下来的理由**，并且这条理由要进入最终的查阅过的来源。两个有效理由：
+只有在有**明确、写下来的理由**、并且写进最终 Sources Consulted 时才可以。两个正当理由：
 
-- **这个环境里没有该类别的 MCP。** 把它标成缺口，而不是选择：「实时团队聊天已跳过。没有匹配的 MCP 可用，所以对话记录无法搜索。」
-- **这个来源可证明地无关**，不只是「大概无关」。门槛很高：「错误 / 异常跟踪已跳过。目标是一个构建时脚本，没有运行时代码路径。」
+- **这个环境里该类别没有可用的 MCP**。把它标成缺口，不是选择："Real-time team chat skipped. No matching MCP available, so the conversational record was not searchable."
+- **该来源可证明无关**，不是"大概无关"。门槛很高："Error / exception tracking skipped. Target is a build-time script with no runtime code path."
 
-如果你的范围评估表明这是一个单次提交的琐碎目标，而且 PR 描述已经包含完整答案，你可以在线回答，**但只有在**确认全部七个可用类别的搜索都会是多余的之后。明确这样说。这应该很少见。
+如果你的范围评估表明这是一个单次提交的琐碎目标、PR 描述里已经包含完整答案，你可以就地回答，**但前提是**先确认全部七个可用类别的搜索都会是多余的。要明确说出来。这种情况应该很少。
 
-## 第 4 步. 综合
+## 第 4 步：综合
 
-派生一个综合者。`model`：`why synthesizer` 那一行，默认 `claude-opus-5-5-xhigh`。它得到：
-1. 调查者的发现，包括任何空结果，以及任何带理由跳过的类别
+Spawn 一个综合者。`model`：`why synthesizer` 那一行，默认 `claude-opus-5-5-xhigh`。它拿到：
+1. 调查员的发现，包括任何空结果和任何带理由跳过的类别
 2. 代码锚点
 3. 用户的原始问题
-4. 来自 `references/epistemics.md` 的认识框架
-5. 来自 `references/synthesizer-prompt.md` 的综合者提示模板
+4. `references/epistemics.md` 里的认识论框架
+5. `references/synthesizer-prompt.md` 里的综合者提示词模板
 
-## 第 5 步. 呈现
+## 第 5 步：呈现
 
-把综合者的输出呈现给用户。你可以为了清晰做轻度编辑，或加上来自对话的上下文，但**不要改写置信用语**。
+把综合者的输出呈现给用户。你可以为了清晰做轻微编辑，或补充对话里的上下文，但**不要改写置信度措辞**。
 
 ## 输出格式
 
-结构就是 `references/synthesizer-prompt.md` 里的那一个：问题、相关代码、我们发现的、我们可以合理推断的、相互竞争的假设、我们不知道的、查阅过的来源、置信度小结。可以按需要调整，但保持置信分层完整，并让查阅过的来源每个调查者一行，包括那些什么都没返回或被跳过的，并写上理由。
+结构就是 `references/synthesizer-prompt.md` 里的那套：The Question、The Code in Question、What We Found、What We Can Reasonably Infer、Competing Hypotheses、What We Don't Know、Sources Consulted、Confidence Summary。按需调整，但保持置信度分层完整，Sources Consulted 保持每个调查员一行，包括那些什么都没返回或被跳过的，并附上原因。
 
-在查阅过的来源之后，如果用户的 `why` 问题是改这段代码的前奏，就把谱系发现转换成一组供规划这次改动用的约束：保留 / 改变 / 避免 / 风险。
+在 Sources Consulted 之后，如果用户的 `why` 问题是要改这段代码的前奏，就把沿革发现转成 Preserve / Change / Avoid / Risk 约束集，用来规划这次改动。
 
 ## 要避免的常见失败模式
 
-- **近因偏向**。把最近一次提交当成权威。当前形状往往是许多更早决定层层堆积的结果。往回追。
+- **近因偏误**。假定最近的提交就是权威。当前的形态往往是许多更早决策层层累积的结果。往回追。
