@@ -1,6 +1,6 @@
-# 值得照抄的提示词
+# 值得抄下来的提示词
 
-换上真实的路径、技能和完成检查。非正式的措辞就行。
+把真实路径、技能和完成检查换进去。措辞随意点也行。
 
 ## 理解
 
@@ -15,14 +15,14 @@
 
 ## 构建
 
-- 缺陷：`/poteto-mode <symptom>. repro first, then fix and verify.`
-- 应用里的缺陷：`/poteto-mode repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.`
-- 带有廉价测试的缺陷：`/poteto-mode repro <bug> first. if there's a cheap test path, /tdd it. then fix and rerun.`
+- Bug：`/poteto-mode <symptom>. repro first, then fix and verify.`
+- 应用里的 Bug：`/poteto-mode repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.`
+- 有便宜测试路径的 Bug：`/poteto-mode repro <bug> first. if there's a cheap test path, /tdd it. then fix and rerun.`
 - 功能：`/poteto-mode add <behavior>. <current output> stays byte-identical. verify both.`
 - 重构：`/poteto-mode move <code> into one module, zero behavior change. record the current output first and prove it's unchanged after.`
 - 性能：`/poteto-mode <operation> takes <time> on <fixture>. trace it, fix the measured cause, show me before and after.`
 
-## 设计与计划
+## 设计与规划
 
 - `/poteto-mode prototype a few options for <feature>. take screenshots or videos for me to compare.`
 - `/poteto-mode we need <feature>. /architect it first, and answer open questions with prototypes. let me review before proceeding.`
@@ -33,19 +33,19 @@
 
 ## 审查与发布
 
-- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Dropped 清单也要读。
-- `/create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` 那段代码有合并或重构之后：`/maintain-formal-verification-skill`。
+- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` 也读一下 Dropped 列表。
+- `/create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` 那块代码合并或重构之后：`/maintain-formal-verification-skill`。
 - `/swarm check every package under <dir> against its check script. one worker per package. one report.`
 - `/poteto-mode open the pr. small ordered commits, evidence in the description.`
-- `/poteto-mode babysit this pr. get it green.` 只要状态的话：`/poteto-mode check on pr <number>. anything outstanding?`
+- `/poteto-mode babysit this pr. get it green.` 只看状态：`/poteto-mode check on pr <number>. anything outstanding?`
 - `/poteto-mode land the stack.`
 
 ## 离开与回来
 
 - `/poteto-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
-- `/show-me-your-work catch me up on what you did last night.` 先读它的 Attention 一节。
-- `/ketchup` 帮你跟上这次对话中你上一条消息以来的内容，并列出每一个正等着你的决定。
+- `/show-me-your-work catch me up on what you did last night.` 先读它的 Attention 部分。
+- `/ketchup` 补上这个对话从你上条消息之后的内容，并列出每一个等你处理的调用。
 - `/poteto-mode full autopilot on this queue. each item is independent.`
 - `/poteto-mode autopilot these changes, but don't merge. i'll land them.`
-- `/reflect capture what we learned so the next run doesn't repeat it.` 只批准那些会改变未来某个决定的编辑。
-- `/bro` 用白话把上一条回复再说一遍。
+- `/reflect capture what we learned so the next run doesn't repeat it.` 只批准那些会改变未来决策的修改。
+- `/bro` 用大白话把上一条回复重说一遍。
