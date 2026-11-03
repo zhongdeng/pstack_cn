@@ -78,7 +78,7 @@ budgets:
   operations_follow_up_minutes: 45
 
 models:
-  triage: "选择一个可用的公开模型标识"
-  reproduce: "选择一个可用的公开模型标识"
-  code: "选择一个可用的公开模型标识"
-  media_review: "选择一个可用的公开模型标识"
+  triage: "选择一个可用的公开模型 slug"
+  reproduce: "选择一个可用的公开模型 slug"
+  code: "选择一个可用的公开模型 slug"
+  media_review: "选择一个可用的公开模型 slug"
