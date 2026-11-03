@@ -1,14 +1,14 @@
-# 渲染一张图
+# 渲染图表
 
-用 npm 包 `pele@1.9.0` 渲染你展示的每一个 `.mmd` 文件，并把 SVG 交给用户。在仓库之外安装一次 Pele。把每个 SVG 写在对应的 `.mmd` 旁边，名字相同。API 在 https://pele.run/api。把 `{ limit: 1_000_000, outputLimit: 8_000_000, maxEdges: 10_000 }` 作为 `render` 的选项传入。Pele 的默认值比一张有 500 个状态的图可能需要的更小。Pele 抛出 `PeleError` 时，把 Mermaid 文本和这个错误展示给用户。
+你展示的每个 `.mmd` 文件都用 npm 包 `pele@1.9.0` 渲染，并把 SVG 交给用户。Pele 只装一次，装在仓库外面。每个 SVG 写在对应 `.mmd` 文件旁边，名字相同。API 在 https://pele.run/api。把 `{ limit: 1_000_000, outputLimit: 8_000_000, maxEdges: 10_000 }` 作为 `render` 的 options 传进去。Pele 的默认值比一张 500 个状态的图表能用的要小。Pele 抛出 `PeleError` 时，把 Mermaid 文本和错误一起给用户看。
 
 ## 颜色
 
-Pele 忽略 Mermaid 的 `theme` 和 `themeVariables`。在 `.pele` 上设置它的 `--pele-*` CSS 变量。https://pele.run/theming 列出了它们。命令给每个状态它所属分组的颜色类，例如 `class sN teal`。它用 `class sN breaks` 或 `class sN mayBreak` 标记每一个坏状态，用 `class sN bugPath` 标记通往一个缺陷的最短路径上的每一个状态，用 `class sN repeats` 标记 PROPERTY 反例会永远重复的每一个状态。Pele 把这些类放在该状态的节点上。用 CSS 给这些类上色。
+Pele 忽略 Mermaid 的 `theme` 和 `themeVariables`。把它的 `--pele-*` CSS 变量设在 `.pele` 上。https://pele.run/theming 列出了这些变量。命令给每个状态加上它所属分组的颜色类，比如 `class sN teal`。它给每个坏状态标上 `class sN breaks` 或 `class sN mayBreak`，给最短路径上通往 bug 的每个状态标上 `class sN bugPath`，给 PROPERTY 反例永远重复的每个状态标上 `class sN repeats`。Pele 把这些类放在状态的节点上。用 CSS 给这些类上色。
 
-`.mmd` 文件里，`breaks` 和 `mayBreak` 各有一行 `classDef`，这样任何 Mermaid 查看器都会显示缺陷标记。分组颜色、`bugPath` 和 `repeats` 没有 `classDef`。Pele 把每一行 `classDef` 的颜色写成节点上的 `style` 属性，而 `style` 属性会压过普通 CSS 规则。所以下面的标记规则使用 `!important`。没有它，深色主题会留下浅色的标记颜色。缺陷标记设置填充和文字，`bugPath` 和 `repeats` 设置边框。把标记规则放在分组颜色之后，这样标记会盖在分组颜色上面。
+`.mmd` 文件里有针对 `breaks` 和 `mayBreak` 的 `classDef` 行，这样任何 Mermaid 查看器都能显示 bug 标记。它没有针对分组颜色、`bugPath` 或 `repeats` 的 `classDef`。Pele 把每个 `classDef` 的颜色写成节点上的 `style` 属性，而 `style` 属性会盖过普通的 CSS 规则。所以下面这些标记的规则用了 `!important`。没有它，深色主题会保留浅色的标记颜色。bug 标记设置填充和文字，`bugPath` 和 `repeats` 设置边框。把标记规则放在分组颜色之后，这样标记会盖在分组颜色上面。
 
-这些颜色是建议。它们是旧 skill 的颜色。把它们放进每个 SVG 开头的 `<style>` 元素里。然后每个 SVG 跟随查看器的浅色或深色设置。
+这些颜色是建议。它们是旧技能的颜色。把它们放进每个 SVG 开头的 `<style>` 元素里。这样每个 SVG 都会跟随查看器的浅色或深色设置。
 
 ```css
 .pele {
