@@ -1,23 +1,23 @@
-# 在你睡觉时跑工作
+# 睡觉时让工作继续跑
 
-这是前面一切的回报。一个你能信任它验证自己工作的 agent，就是一个你可以留它独自面对难任务的 agent。让这件事安全的，不是希望。是一个可以核对的完成条件，一个隔离的工作树或云端 agent，以及一份你早上审计的决策日志。
+这是前面所有内容的回报。一个你能信任它会验证自己工作的智能体，就是一个你可以放心丢给它一个硬任务的智能体。让它安全靠的不是希望，而是一个可检查的完成条件、一个隔离的 worktree 或云端智能体，以及一份你早上审阅的决策日志。
 
-![她在门口挥手道晚安，机器人维持工厂运转，其中一个正在更新一块 DECISION LOG 墙板，上方是 BUILD LOOP ACTIVE 的牌子。](./images/overnight.jpg)
+![她从门口挥手道晚安，机器人让工厂继续运转，其中一个在 BUILD LOOP ACTIVE 牌子下更新 DECISION LOG 墙板。](./images/overnight.jpg)
 
 ## 先赢得信任，再上循环
 
-一个你不信任的循环，只是更快地生产未经核对的工作，而且乱会随着每一次迭代叠加。在你留一个跑着离开之前，确认它已经赢得了这份信任：
+你不信任的循环只会更快地产出没人检查的工作，而且每迭代一次，烂摊子就滚大一圈。在放任一个循环自己跑之前，先确认它配得上这份信任：
 
-- 你亲手做过一次这个任务，或者看过一个 agent 做它，所以你知道好是什么样。
-- agent 拥有你自己会用的工具和信号：验证 skill、性能分析器、日志。
-- 每个阶段都证明自己的工作，并能在工作没达到标准时停下整条线。
-- 你读过几份对话记录，并把反复的失败变成了工具、skill 或检查。
+- 你亲手做过一次这个任务，或者看着智能体做过一次，所以你知道做好是什么样。
+- 智能体手里有你本来会用的工具和信号：验证技能、profiler、日志。
+- 每个阶段都证明自己的工作，工作不达标时能叫停整条线。
+- 你读过几份 transcript，把反复出现的失败变成了工具、技能或检查。
 
-只有这四条都成立之后，才让循环自主。在那之前，看着它跑。
+四条都成立之后，才让循环自主运行。在那之前，盯着它跑。
 
-## 通宵约定
+## 过夜契约
 
-一次好的交接有目标、完成条件、权限，以及一个逃生口。它不必很长：
+好的交接包含目标、完成条件、权限和一条逃生通道。不用写很长：
 
 ```text
 /poteto-mode im going to bed. migrate every caller to the new parser in a fresh worktree off <base>.
@@ -26,20 +26,20 @@ keep a decision log. don't ask me before committing.
 /loop until done. if you're truly stuck after a few hours, stop and write up why.
 ```
 
-逐行走一遍每一行给你买到什么：
+逐行看看每一句给你换来了什么：
 
-- “im going to bed” 是一次会话覆盖。agent 不再询问，继续往下做。
-- “done means...” 把目标变成每一次迭代都能跑的核对。
-- “fresh worktree off `<base>`” 让这次运行不会和你打开的任何其他东西相撞。
-- “don't ask me before committing” 预先回答了 agent 否则会阻塞在上面的那个权限。
-- `/loop` 是 Cursor 内置的唤醒机制，不是一个 pstack skill。[自主运行行动手册](../../skills/poteto-mode/playbooks/autonomous-run.md)用它在事件或一次心跳上重新检查完成条件。
-- 逃生口让它在真正的死胡同停下，并写明为什么，这胜过八个小时创造性地重新解释目标。
+- "im going to bed" 是会话级覆盖。智能体不再问你，继续往下做。
+- "done means..." 把目标变成每一轮迭代都能跑的检查。
+- "fresh worktree off `<base>`" 让这次运行不会和你开着的其他东西撞车。
+- "don't ask me before committing" 提前回答了智能体本来会卡住等你的那个权限。
+- `/loop` 是 Cursor 内置的唤醒机制，不是 pstack 技能。[Autonomous run 作战手册](../../skills/poteto-mode/playbooks/autonomous-run.md)用它按事件或心跳重新检查完成条件。
+- 逃生通道让它能在真正走不通时停下来，写清楚为什么，这比八小时富有创造性地重新诠释目标强多了。
 
-因为你会在走开之后评审这份工作，`/poteto-mode` 把它经由 [`/figure-it-out`](../../skills/figure-it-out/SKILL.md) 路由，后者在任何代码之前设计这次运行的阶段，并接上决策日志。
+因为你离开之后还要审这份工作，`/poteto-mode` 会把它交给 [`/figure-it-out`](../../skills/figure-it-out/SKILL.md)，由后者在写任何代码之前设计好这次运行的各个阶段，并接上决策日志。
 
-要有意停掉一次运行，告诉 agent 暂停，或者你即将离线或重启 Cursor。[安全暂停行动手册](../../skills/poteto-mode/playbooks/pause-safely.md)完成或退出当前步骤，提交一个进行中的检查点，并写一张恢复说明。一个新对话通过会话接手行动手册，从那张说明把工作接起来。说 “keep going” 从不会触发暂停。
+要主动停掉一次运行，就告诉智能体暂停，或者告诉它你即将离线或重启 Cursor。[Pause safely 作战手册](../../skills/poteto-mode/playbooks/pause-safely.md)会完成或退出当前步骤，提交一个进行中的检查点，并写一条续跑说明。新开的对话通过 Session pickup 作战手册从这条说明接着干。说 "keep going" 永远不会触发暂停。
 
-## 循环整夜做什么
+## 循环整夜在做什么
 
 ```mermaid
 flowchart TD
@@ -53,56 +53,56 @@ flowchart TD
     G --> A
 ```
 
-一次改动，一次核对，一行日志，每一次迭代。没有帮助的改动被丢弃，不会留着搭便车。平台期意味着转向，不是停止，完成条件也从不会悄悄放宽来宣布胜利。
+一次改动，一次检查，一行日志，每一轮都如此。没帮上忙的改动直接丢弃，不留着凑数。进入平台期意味着换方向，不是停下，完成条件也永远不会悄悄放宽来宣布胜利。
 
-## 早晨的审计
+## 早上的审计
 
-[`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) 让这次运行可以被评审。每一行记录时间、阶段、决定、理由、一个证据指针和结果，写在 `decisions.tsv` 的一份 TSV 里（当好几次运行共享一个目录时，是 `.audit/<task-slug>.tsv`）。它默认留在本地。当工作大到评审者需要这条轨迹才能信任结果时，把它提交。
+[`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) 是让这次运行可审的关键。每一行记录时间、阶段、决策、理由、证据指针和结果，写在 `decisions.tsv` 这个 TSV 里（当多次运行共用一个目录时，写在 `.audit/<task-slug>.tsv`）。默认只留在本地。当工作足够大，审阅者需要这条轨迹才能信任结果时，就把它提交。
 
-你回来之后，以评审的形式要这次运行：
+你回来之后，用审阅的形式要这次运行的汇报：
 
 ```text
 /show-me-your-work catch me up on what you did last night
 ```
 
-在这个 skill 交回摘要之前，它在另一个模型族上拉起一个评审者来读轨迹和对话记录，回复以一个 Attention 节结束，列出值得你审视的东西。先读那一节，再读它指向的日志行。你在审计决定，不是把整夜重读一遍。
+技能交出总结之前，会派一个不同模型家族的审阅者去读轨迹和 transcript，回复末尾会有一个 Attention 部分，列出值得你细看的地方。先读那一部分，再读它指向的日志行。你审的是决策，不是把整晚重读一遍。
 
-想要一份快速状态而不是一次审计，在跑这份工作的对话里运行 [`/ketchup`](../../skills/ketchup/SKILL.md)。它只读，用白话告诉你自你上一条消息以来变了什么，并带上工作产出的截图和小图。然后它列出每一件正等你处理的事，例如一次合并、一次批准，或在几个选项之间做选择，并带上它的选择、证据和风险，这样你只凭这条回复就能决定。
+想要快速状态而不是完整审计，就在跑这项工作的那个对话里运行 [`/ketchup`](../../skills/ketchup/SKILL.md)。它只读不写，用大白话告诉你自你上条消息以来改了什么，附上工作产出的截图和小图。然后它列出每一个等你拍板的事项，比如合并、批准、或在几个选项之间做选择，附上它的选择、证据和风险，让你光看回复就能决定。
 
-## 当这一夜装的是一个队列，而不是一个任务
+## 当这一夜排的是队列，不是单个任务
 
-上面的约定把一个任务推到一个完成条件。有些夜里装得更多，一个相互独立的改动队列，或一整项工程。三份行动手册把同一份信任放大。
+上面的契约是把一个任务推到一个完成条件。有些夜晚装的东西更多，一串互相独立的改动，或者一整个项目。三份作战手册把同样的信任放大。
 
-[Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md) 把一个相互独立的 PR 队列跑到已合并。每个 PR 有一个负责人 agent，把它从构建带到合并，没有任何负责人凭自己的裁决合并。一群全新的验证者检查负责人那个代码就绪的 head。之后的一次变基或小修复得到一个全新的验证者，只有新行为或一大份新 diff 才会再次叫来整群 swarm。只有对将要合并的那份补丁的一份干净裁决，才授权这次合并：
+[Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md) 把一串独立的 PR 一路跑到合并。每个 PR 有一个负责智能体，从构建一路带到合并，而且没有哪个负责人凭自己的判定就合并。一群全新的验证者检查负责人那个代码就绪的 head。之后的 rebase 或小修只派一个全新验证者，只有出现新行为或大的新 diff 才重新召集整个 swarm。只有对将要合并的那个 patch 给出干净判定，才授权合并：
 
 ```text
 /poteto-mode full autopilot on this queue. each item is independent. i want them merged by morning.
 ```
 
-[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) 是去掉合并的 Autopilot-full。你醒来时看到已验证的 PR，每一个都带着自己的裁决，你自己评审并合入。一个 PR 只叠在它所基于的那个 PR 上。当你想在任何东西合并之前用自己的眼睛看过，就选它而不是 Autopilot-full：
+[Autopilot-stack](../../skills/poteto-mode/playbooks/autopilot-stack.md) 是去掉合并的 Autopilot-full。你醒来看到的是已验证的 PR，每个都带判定，由你自己审阅并合入。一个 PR 只堆叠在它所基于的 PR 上。当你希望在任何东西合并之前亲眼过一遍工作时，选它而不是 Autopilot-full：
 
 ```text
 /poteto-mode autopilot these five changes, but don't merge. i'll land them in the morning.
 ```
 
-[编排](../../skills/poteto-mode/playbooks/orchestrate.md)用于一项比任何单个 agent 都活得久的工程：跨多日、许多堆叠的 PR、在一个常设协调者对话之下的成队子 agent。协调者决定哪一个 agent 做每一块工作，检查每一个产出了什么，并且自己从不写代码。如果一个 agent 能在一次会话里做完这份工作，行动手册自己会把你送回上面的通宵约定：
+[Orchestrate](../../skills/poteto-mode/playbooks/orchestrate.md) 面向比任何单个智能体活得更久的项目：跨多天、大量堆叠的 PR、在一个常驻协调对话下的一群子智能体。协调者决定每块工作由哪个智能体做，检查每个智能体产出什么，自己从不写代码。如果一个智能体在一个会话里就能干完，作战手册本身会把你送回上面的过夜契约：
 
 ```text
 /poteto-mode orchestrate the store migration. own it until every package is converted and merged. i'll check in twice a day.
 ```
 
-## 并行跑很多项目
+## 并行跑多个项目
 
-一个 [Cursor Project](https://cursor.com/blog/projects) 给一个协调者 agent 一条持久的线程。协调者不写代码。它指挥子 agent，子 agent 默认在云端运行，所以笔记本合上时工作仍在继续。这就是编排行动手册所期望的形状。给你发给协调者的提示词以 `/poteto-mode` 开头，它拉起的子 agent 就遵循行动手册。
+一个 [Cursor Project](https://cursor.com/blog/projects) 给一个协调智能体一条常驻线程。协调者不写代码。它指挥子智能体，子智能体默认在云端运行，所以你合上笔记本工作也继续。这正是 Orchestrate 作战手册期待的形状。给协调者的提示词以 `/poteto-mode` 开头，它派出的子智能体就会遵循这些作战手册。
 
-几条习惯有帮助：
+几个习惯会有帮助：
 
-- 给每一块工作自己的 Project，例如一个功能、一次迁移、一次性能推进，或一次技术债清理。好几个可以并排跑。
-- 把相关对话拖进 Project，包括已经结束的。它们成为里面每个 agent 的上下文。
-- 在每个 PR 合并之前给它一次验证 swarm，并让 Autopilot-stack 或 Autopilot-full 带走队列。
-- 向协调者要一份有数据支撑的计划，并让它在问你之前用原型回答开放问题。
+- 每块工作给它自己的 Project，比如一个功能、一次迁移、一轮性能优化、或一次技术债清理。几个可以并排跑。
+- 把相关的对话拖进 Project，包括已经结束的。它们会成为其中每个智能体的上下文。
+- 每个 PR 合并前都配一个验证 swarm，让 Autopilot-stack 或 Autopilot-full 带队列。
+- 向协调者要一个由数据支撑的计划，让它用原型回答悬而未决的问题，而不是来问你。
 
-一条提示词可以承载一整个 Project，从研究一直到执行：
+一条提示词就能带起整个 Project，从调研到执行：
 
 ```text
 /poteto-mode refactor this repo so its architecture is more agent friendly. use /correct and /architect on past commits and review comments to find the mistakes agents make most here. use /recall for context from past chats. answer open questions with prototypes instead of asking me. come back with a plan backed by real data. once i approve it, run it with autopilot-stack or autopilot-full, and ask me which.
@@ -110,13 +110,13 @@ flowchart TD
 
 ## 让循环自己启动
 
-上面的每个循环仍然等你来启动。一次定时的或事件驱动的自动化去掉这一步。软件维护分成很适合这样做的阶段：对一份报告分诊，复现它，修复它，验证修复。两条规则让这样一条线值得信任：
+上面每个循环都还在等你来启动。定时或事件驱动的自动化去掉了这一步。软件维护天然分成适合这么做的几个阶段：分诊一个报告、复现它、修它、验证修复。两条规则让这样的流水线值得信任：
 
-- 每个阶段都能停下整条线。分诊可以判定报告是预期行为，复现可能复现不出来，修复者可以判定改动风险太高。每一种结果都有用，因为它让坏工作到不了下一阶段，而下一阶段撤销的代价更高。
-- 每个阶段都交出证据。复现附上损坏状态的截图和视频，修复附上改前改后的证明。人就可以在读一行代码之前，核对 agent 修的是对的那件事。
+- 每个阶段都能叫停整条线。分诊可以判定报告是预期行为，复现可以复现不出来，修复者可以判断改动风险太大。每种结果都有用，因为它挡住了坏工作流到下一阶段，在那里撤销的代价更高。
+- 每个阶段都交接证据。复现附上故障状态的截图和视频，修复附上前后对比的证明。这样人可以先确认智能体修对了东西，再去看一行代码。
 
-pstack 把这作为一套休眠的[自动化包](../../automations/benny/README.md)提供，用于 Slack 的问题报告。一个自动化对每份报告分诊。另一个复现已确认的 bug，并可能准备一份小的草稿修复。让一个 agent 指向它的 [`FOR_AGENTS.md`](../../automations/benny/FOR_AGENTS.md)，并点名目标仓库来设置它。
+pstack 把这做成一个休眠的 [automation pack](../../automations/benny/README.md)，用于 Slack issue 报告。一个自动化分诊每份报告。另一个复现已确认的 bug，并可能准备一个小草稿修复。让一个智能体去看它的 [`FOR_AGENTS.md`](../../automations/benny/FOR_AGENTS.md)，并指定目标仓库来把它设置起来。
 
-**陷阱：** 一段时长不是完成条件。“在这上面干 4 个小时”没给 agent 任何可核对的东西，你会醒来看到四个小时的动作，而不是一个结果。给 `/loop` 一个能够通过或失败的谓词。
+**坑：**时长不是完成条件。"work on this for 4 hours" 没给智能体任何可检查的东西，你醒来看到的会是四小时的动作，而不是结果。给 `/loop` 一个能通过也能失败的谓词。
 
-下一篇：[用原则名字掌舵](./08-principles.md)。
+下一步：[用原则名字来掌舵](./08-principles.md)。
