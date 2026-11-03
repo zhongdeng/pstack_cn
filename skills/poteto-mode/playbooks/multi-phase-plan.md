@@ -1,18 +1,18 @@
 ### 多阶段或多 PR 计划
 
-**计划由你负责，代码不由你负责。计划是一份清单，负责人一格一格地跑，操作者根据证据来审计。** 计划就是交付物。不要实现。
+**你负责计划，不负责代码。计划是一份清单，负责人逐项打勾执行，操作者依据证据审计。** 计划就是交付物。不要动手实现。
 
-1. 当改动是一两个文件、做法明显时，跳过计划。这样说，然后停。
-2. 写下来之前，用原型把未决问题定下来。每一个都跑 `playbooks/prototype.md`。把分支、SHA 和截图留给附录 A。只向操作者问那些没有任何一次运行能裁定的产品或偏好决定。给出选项（**never-block-on-the-human** 原则技能）。
-3. 在子代理里探索，使用 `subagent_type: "poteto-agent"`，并按子代理一节给出明确模型（**guard-the-context-window** 原则技能）。按子代理一节，为每个子代理选择这项工作所需的推理档位，以及 fast 或 standard 速度。每个返回文件指针、惯例、测试命令和入口。不要内联倾倒。
-4. 把下面的骨架复制进计划文件，并填上每一个占位符。除非操作者点名一条路径，否则把文件写在代理存储的 `docs/` 下。按所示顺序保留每一个标题和每一个子块。每个 PR 一节。一个 PR 是一次改动，带它自己的证据（**sequence-verifiable-units** 原则技能）。在 **How to read this** 里点名执行手册。运行可以合并时选 `playbooks/autopilot-full.md`。操作者来合入这些 PR 时选 `playbooks/autopilot-stack.md`。常设项目用 `playbooks/orchestrate.md`。
-5. 完整地按 `/technical-writing` 来写，然后 `/unslop`。正文是一种 Diátaxis 模式，how-to。附录放解释和参考。每个标题说出任务或发现。不要长破折号。不要句中冒号。
-6. 运行 `node pstack/skills/poteto-mode/scripts/check-plan.mjs <plan.md>`，并修掉它打印的每一行（**encode-lessons-in-structure** 原则技能）。
-7. 交回。贴出计划路径和脚本的输出，然后停。执行在操作者明确放行时开始，走计划所点名的执行手册。
+1. 如果改动只涉及一两个文件、方案显而易见，就跳过计划。说明原因并停下。
+2. 动笔之前先用原型把悬而未决的问题定下来。每个问题跑一遍 `playbooks/prototype.md`。保留分支、SHA 和截图，放进附录 A。只有产品取舍或偏好判断、任何一次运行都定不下来的，才去问操作者。给出选项（**never-block-on-the-human** 原则技能）。
+3. 用子智能体探索，`subagent_type: "poteto-agent"`，并按子智能体一节为每个子智能体指定明确的模型（**guard-the-context-window** 原则技能）。按子智能体一节为每个子智能体挑选推理档位和快或标准速度。每个子智能体返回文件指针、约定、测试命令和入口点。不要内联大段转储。
+4. 把下面的骨架复制进计划文件，填满每个占位符。除非操作者指定路径，否则把文件写在智能体存储的 `docs/` 下。保持每个标题和每个子块按所示顺序排列。一个 PR 一节。一个 PR 就是一次改动，带自己的证据（**sequence-verifiable-units** 原则技能）。在 **How to read this** 里写明执行作战手册。这次运行可能合并时选 `playbooks/autopilot-full.md`。由操作者落地 PR 时选 `playbooks/autopilot-stack.md`。长期项目用 `playbooks/orchestrate.md`。
+5. 先用 `/technical-writing` 完整写一遍，再用 `/unslop`。正文只用一种 Diátaxis 模式，how-to。附录放解释和参考。每个标题都点明任务或发现。不用长破折号。不用句中冒号。
+6. 运行 `node pstack/skills/poteto-mode/scripts/check-plan.mjs <plan.md>`，把它打印出的每一行都修掉（**encode-lessons-in-structure** 原则技能）。
+7. 交回。贴出计划路径和脚本输出，然后停下。执行要等操作者明确说 go，按计划里写明的执行作战手册进行。
 
-**验证。** 仅有测试不是充分的验证。一个 PR 只有在它的单元、实机和性能格子全部勾上时才算验证过（**prove-it-works** 原则技能）。那句话就是验证规则。每一个验证块都以它开头。实机块是强制的。十条通道在 PR 的 head 上，经它的控制技能驱动真实交互面，按 **swarm** 技能，使用 `swarm workers` 模型（默认 `grok-4.7-xhigh-fast`）。每一条通道是一格，带一个具体场景、它保存的截图，以及它的通过谓词。一条通道是 **Regression lane against trunk.** 它在主干和 head 上跑同一个承重场景。如果主干没有这个功能，这条通道记下这个事实，并门控 diff 所增加的行为，加上用户在等的终态，而不是发明一个主干结果。性能门禁是双侧的。主干和 head 都必须产出点名的指标。如果主干缺少这个功能，还要隔离 diff 所增加的工作，并为那项工作加上用户在等的端到端状态设一个绝对预算。不要在不相同的场景之间声称一个比值。性能块点名指标、交错的探测、先测到的主干基线，以及带有失败数字的规则。一个改变交互的 PR 要过审查门禁。操作者在聊天里带着截图和一段视频审查它，然后才合并。一个不改变交互的 PR 写 `**Review gate.** None. <PR id> is not review-gated.`，并且它下面没有格子。
+**Verification.** 只跑测试不足以构成验证。一个 PR 只有在它的 unit、live、perf 三个框全部打勾时才算验证通过（**prove-it-works** 原则技能）。这句话就是验证规则。每个验证块都以它开头。live 块是强制的。在 PR head 上开十条 lane，按 **swarm** 技能，在 `swarm workers` 模型（默认 `grok-4.7-xhigh-fast`）上，通过各自的 control 技能驱动真实界面。每条 lane 是一个框，带具体场景、它保存的截图和它的通过判据。其中一条 lane 是 **Regression lane against trunk.** 它在 trunk 和 head 上跑同一个承重场景。如果 trunk 没有这个功能，这条 lane 记录这个事实，改为把关 diff 新增的行为加上用户等待的最终状态，而不是编造一个 trunk 结果。perf 门是双向的。trunk 和 head 都必须产出指定的指标。如果 trunk 缺少这个功能，还要单独隔离出 diff 新增的工作，为这部分工作加上用户等待的端到端状态设定绝对预算。不要在不同场景之间声称比值。perf 块写明指标、交错探测、先测的 trunk 基线，以及带失败数字的规则。改动交互的 PR 要过评审门。操作者在合并前于聊天里看截图和视频评审。不改动交互的 PR 写 `**Review gate.** None. <PR id> is not review-gated.`，下面不放任何框。
 
-**控制技能。** 按交互面来选。浏览器、Electron 和 Web UI 用来自 `cursor-team-kit` 的 `control-ui`。CLI 和 TUI 用来自 `cursor-team-kit` 的 `control-cli`。原生移动端用仓库里任何能驱动模拟器的技能。一个碰到两个交互面的 PR 在两边都有通道。一个没有控制技能的交互面是附录 C 里的一项风险，并且它的实机块仍然点名每一条通道如何驱动它。
+**Control skill.** 按界面来选。浏览器、Electron 和 Web UI 用 `cursor-team-kit` 的 `control-ui`。CLI 和 TUI 用 `cursor-team-kit` 的 `control-cli`。原生移动端用仓库里现成的模拟器驱动技能。一个 PR 涉及两个界面，就在两边都开 lane。没有 control 技能的界面是附录 C 里的风险，它的 live 块仍要写明每条 lane 怎么驱动它。
 
 ````markdown
 # <Program> plan
@@ -152,4 +152,4 @@ Each live lane runs on its own cloud VM at the PR head. Drive through `control-u
 <Docs to read before editing. Which PRs get `pstack/skills/how/SKILL.md` and `pstack/skills/interrogate/SKILL.md`. The trail per `pstack/skills/show-me-your-work/SKILL.md`.>
 ````
 
-**回复：** 计划路径、各 PR id 及其依赖和过审查门禁的那一组、原型证明了什么以及什么仍然未证明，还有检查脚本的输出。
+**Reply:** 计划路径，PR id 及其依赖和评审门集合，原型证明了什么、什么仍未证实，以及检查脚本的输出。

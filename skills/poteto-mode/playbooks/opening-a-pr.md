@@ -1,34 +1,34 @@
-### 打开 PR
+### 开 PR
 
-在每一本其他手册的末尾被调用。
+在每个其他作战手册结束时调用。
 
-**工作树。** 从 main 分出的 git 工作树里工作。子代理继承它。同一条分支上的多次 `Task` 调用各自得到自己的工作树，或者在它们之间做 `git fetch && git reset --hard origin/<branch>`。脏分支上有无关工作：把补丁摘出来，开一个新的工作树，再应用。缠住的工作树：从 main 重置，最小地重做。
+**Worktree。** 从 main 拉一个 git worktree 干活。子智能体继承它。同一分支上的多个 `Task` 调用各自拿一个 worktree，或者在它们之间跑 `git fetch && git reset --hard origin/<branch>`。分支上有无关改动、状态脏：先 patch 出来，开新 worktree，再 apply。worktree 乱成一团：从 main reset，最小化重做。
 
-**提交。** 勤于提交。开 PR 之前变基成小而有序的提交。每一次提交都是未来的一个 PR：可以落地，并且排好序来讲这个故事。修复属于一个刚做的提交时，用 amend。可以分开时，做新提交。提交正文不要重述主题。
+**提交。** 放心多提交。开 PR 前 rebase 成小而有序的提交。每个提交都是一个未来的 PR：可落地，顺序能讲清故事。修复属于刚做的那个提交就 amend。能拆开就新开一个提交。提交正文不要复述标题。
 
-**PR。** 提交之前用来自 `cursor-team-kit` 的 `/deslop` 扫一遍 diff，审查之前做 `/no-comments`。用 `/technical-writing` 写每一个 PR 标题、描述和提交正文（除 Diátaxis 以外的每一层，并应用 STE 词汇规则：每个动作一个词，保留冠词，能用朴素动词就不用 `-ing`），然后再应用 `/unslop`。
+**PR。** 提交前用 `cursor-team-kit` 里的 `/deslop` 过一遍 diff，评审前跑 `/no-comments`。每个 PR 标题、描述和提交正文都用 `/technical-writing` 写（除 Diátaxis 外的每一层，并套用 STE 词汇规则：一个动作一个词，保留冠词，能用普通动词就不用 `-ing`），然后再套 `/unslop`。
 
-**标题。** Conventional Commits 的 `type(scope): subject`，末尾不要句号。类型例如 `feat`、`fix`、`docs`、`refactor`、`test`、`chore` 或 `perf`。范围是区域，例如 `pstack` 或 `poteto-mode`。主题短、用祈使，并在有一个真实符号承载这次改动时点名它，例如 `fix(pstack): retarget opening-a-pr babysit trigger`。
+**标题。** Conventional Commits 格式 `type(scope): subject`，结尾不加句号。Type 用 `feat`、`fix`、`docs`、`refactor`、`test`、`chore` 或 `perf` 之类。Scope 是区域，比如 `pstack` 或 `poteto-mode`。Subject 要短、用祈使句，承载改动的真实符号要点名，例如 `fix(pstack): retarget opening-a-pr babysit trigger`。
 
-**描述。** PR 正文是给已经有 diff 的审查者的一分钟简报，不是实验笔记本。它说明这次改动为什么存在、它留下了什么、它可能弄坏什么，以及你如何证明它能工作。写短而简单的句子，标识符少，不要文字墙。正文会变成 squash 提交的正文，所以把那次提交保持在大约 40 行以内。按这个顺序使用 `##` 标题，不要用粗体领起，没有内容可说的节就丢掉：
+**描述。** PR 正文是给手里有 diff 的评审者看的一分钟简报，不是实验记录本。它说明改动为什么存在、刻意不做什么、可能弄坏什么、你怎么证明它能用。句子短而简单，少用标识符，不要大段文字。正文会变成 squash 提交的正文，所以那个提交控制在 40 行左右。用 `##` 标题，不要用加粗引导句，按这个顺序，没话说的段落直接删掉：
 
-- `## Why`：问题和做法，1 到 3 句短句。不要 SHA，不要变基谱系，也不要「based on main」这种开场。
-- `## What changed`：1 到 3 条短项目。只有当一个真实符号或路径承载这次改动时才点名它。重命名或改目标要两边都点名。
-- `## Scope`：始终要有。1 到 3 条短项，说明它覆盖什么、有意留下什么（一项后续、一个已知缺口）。不要符号、路径，或逐文件的长文。
-- `## Tradeoffs`：只写审查者否则会问到的被拒备选。没有真正的选择时跳过。
-- `## Blast Radius`：1 到 2 句，说明它碰到谁或什么，以及为什么那是安全的或有风险的。如果 main 是红的，说明让它继续红着的代价。
-- `## Verification`：1 到 3 条，每一条是一条真实的运行路径及其结果。性能：一个带单位的主要数字，`before → after`，以及指向 arena 或 swarm 目录的链接，其余的放那里。不要样本量方法论、swarm 复述，或指标表。
+- `## Why`：问题和做法，1 到 3 句短句。不要 SHA、不要 rebase 家谱、不要"基于 main"之类的开场。
+- `## What changed`：1 到 3 条短要点。只有真实符号或路径承载改动时才点名。重命名或重定向要把两边都写出来。
+- `## Scope`：必须有。1 到 3 条短项，说明覆盖什么、刻意不覆盖什么（后续工作、已知缺口）。不要符号、路径，也不要逐文件的长篇。
+- `## Tradeoffs`：只写评审者否则会追问的被否掉的方案。没有真正的取舍就跳过。
+- `## Blast Radius`：1 到 2 句，说明影响谁或什么，以及为什么安全或为什么有风险。如果 main 是红的，说明让它继续红着的代价。
+- `## Verification`：1 到 3 条要点，每条是一个真实跑过的路径和结果。性能：给一个主数字带单位，`before → after`，其余细节链接到 arena 或 swarm 目录。不要样本量方法论、swarm 复述或指标表格。
 
-这些节之后，当视频或截图能证明一条说法时附上它们。完整 SHA、swarm 或 arena 通道的复述、杠杆修正长文、逐文件清单，以及「CLEAN」裁决，放进一个链接的产物，不放进正文。
+段落之后，能证明某个说法的就附视频或截图。完整 SHA、swarm 或 arena 泳道复述、杠杆修正长文、逐文件清单和"CLEAN"结论放进链接的附件里，不要放正文。
 
-**托管平台。** 在第一次 PR 操作之前解析托管平台，并在创建、编辑、查看、看守和合并上保持这个选择。GitHub CLI（`gh`）是默认。如果 `command -v origin` 成功并且 Origin 能解析该仓库，优先用 `origin pr ...`。如果 Origin 不在，或不能解析该仓库，留在 `gh` 并记下这次回退。不要要求 Graphite（`gt`）。
+**Forge。** 第一次 PR 操作前先确定用哪个 forge，create、edit、view、watch、merge 全程都用它。GitHub CLI（`gh`）是默认。如果 `command -v origin` 成功且 Origin 能解析仓库，优先用 `origin pr ...`。如果 Origin 不存在或解析不了仓库，就用 `gh`，并记下这个回退。不要求 Graphite（`gt`）。
 
-**内建 PR 工具。** 当这次运行提供了内建 PR 工具时，创建、编辑、改目标和标为就绪都经它完成，绝不经托管平台 CLI。用 CLI 做出的 PR 会漏掉该工具所跟踪的东西。工具没有覆盖的一切，以及这次运行没有这种工具时的每一次 PR 操作，使用已解析的托管平台。
+**内置 PR 工具。** 运行时提供了内置 PR 工具时，创建、编辑、重定向和标记就绪都走它，绝不走 forge CLI。CLI 建的 PR 会漏掉工具追踪的东西。工具不覆盖的事，以及运行时没有这种工具时的所有 PR 操作，都用已确定的 forge。
 
-**大小和栈。** 偏好五个窄 PR，而不是一个大 PR。栈是一条基分支链。根 PR 的目标是主干。每一个子分支变基到其父的确切 tip，并且它的 PR 以父分支为目标。父合并时，按 `playbooks/shipping.md` 第 4 步把它的子移到主干。没有内建 PR 工具时，按已解析的托管平台，用 `origin pr create --status open --base <parent-branch>` 或 `gh pr create --base <parent-branch>` 创建子 PR，并用 `origin pr edit <pr> --base <parent-branch>` 或 `gh pr edit <pr> --base <parent-branch>` 改一个的目标。只为独立的工作从主干分出。在大量的栈工作之前，先变基到主干。
+**大小和栈。** 五个窄 PR 好过一个大的。栈是一条 base 分支链。根 PR 指向 trunk。每个子分支 rebase 到父分支的确切 tip 上，它的 PR 指向父分支。父分支合并后，按 `playbooks/shipping.md` 第 4 步把子分支挪到 trunk 上。没有内置 PR 工具时，按已确定的 forge，用 `origin pr create --status open --base <parent-branch>` 或 `gh pr create --base <parent-branch>` 建子 PR，用 `origin pr edit <pr> --base <parent-branch>` 或 `gh pr edit <pr> --base <parent-branch>` 重定向。只有独立工作才从 trunk 拉分支。大栈开工前先 rebase 到 trunk。
 
-**就绪。** 每个 PR 都以就绪打开，绝不要作为草稿。内建 PR 工具可能默认草稿，所以经它的每一次创建调用都设 `draft: false`。用 Origin 时传 `--status open`。用 `gh` 时省略 `--draft`。如果一个 PR 仍然以草稿打开，经 PR 工具把它标为就绪，或按已解析的托管平台运行 `origin pr ready <number>` 或 `gh pr ready <number>`。在你提及 PR 状态之前，运行 `origin pr view <number>` 或 `gh pr view <number>`。
+**就绪状态。** 每个 PR 都以就绪状态开，绝不开成 draft。内置 PR 工具可能默认 draft，所以通过它每次创建都设 `draft: false`。用 Origin 时传 `--status open`。用 `gh` 时省掉 `--draft`。如果 PR 还是开成了 draft，通过 PR 工具标记就绪，或按已确定的 forge 跑 `origin pr ready <number>` 或 `gh pr ready <number>`。提到 PR 状态前先跑 `origin pr view <number>` 或 `gh pr view <number>`。
 
-**Babysit。** 开一个 PR 并不开始 Babysit。贴出 URL，继续构建。先完成这个阶段或这叠栈。只有当整叠栈存在、并且用户要求时，才单独跑一遍 Babysit。对每个新 PR 都做 Babysit 会拖住构建，并把检查花在稍后的波次会重启的提交上。反馈漂离意图时，推回去。
+**Babysit。** 开 PR 不会启动 babysit。把 URL 发出去，继续干活。先把这一阶段或这个栈做完。只有用户在整个栈都存在之后要求时，才单独跑一轮 babysit。每个新 PR 都 babysit 会拖住构建，把检查花在后续波次会重启的提交上。反馈偏离意图时要顶回去。
 
-一个开 PR 的子代理要跑 `/deslop` 和 `/no-comments`，并贴出 URL。它回到父级，不做 Babysit，除非它是 Autopilot-full 或 Autopilot-stack 的负责人。那位负责人的简报指定了 Babysit 循环，而这正是 `playbooks/babysit.md` 在等的那句请求。负责人在它的代码就绪报告之后开始循环，报告可合并，并且不受这里以及 `playbooks/babysit.md` 里那些「等到整叠栈建好才 Babysit」的规则约束。
+开 PR 的子智能体跑 `/deslop` 和 `/no-comments`，然后发 URL。它回到父级，不做 babysit，除非它是 Autopilot-full 或 Autopilot-stack 的负责人。那个负责人的任务书里指派了 babysit 循环，也就是 `playbooks/babysit.md` 在等的那个请求。负责人在代码就绪报告之后启动循环，报告 merge-ready，并且不受这里和 `playbooks/babysit.md` 里那些要求等整个栈建完才 babysit 的规则约束。
