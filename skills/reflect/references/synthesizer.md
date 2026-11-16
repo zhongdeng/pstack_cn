@@ -25,7 +25,7 @@
 - 「位于 SHA `bd91aa7` 的 linter 使用 chars/4 启发式」
 - 「`<specific-skill-name>` 在上限 80 时有 175 个 token」
 - 「Bugbot 在 5 月 2 日标出了正则回溯」
-- 「我们在 `encodingForModel` 里把 `gpt-4` 改名为 `gpt-4o`」
+- 「我们在 `settings.ts` 里把 `parseConfig` 改名为 `loadConfig`」
 
 保留（持久的模式）：
 - 「用于触发检测的封闭正则枚举很脆。优先使用经 schema 校验的结构」

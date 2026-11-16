@@ -45,7 +45,7 @@ disable-model-invocation: true
 
 pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin marketplace add cursor/plugins`，然后 `/plugin install pstack@cursor-plugins`。在那里，每条命令都带 `pstack:` 前缀，例如 `/pstack:poteto-mode`。[Claude Code 适配器](../../docs/harness/claude-code.md) 映射 Cursor 的名字，而需要 Cursor 独有功能的步骤，例如 Bugbot 或 Automations，会跳过并附一行说明。
 
-其他工具也能读这些技能，因为它们使用 Agent Skills 格式。但大多数工作流技能，包括 `/poteto-mode`、`/how`、`/why` 和 `/teach`，会以按角色划分的模型启动 Cursor 子代理，而自定义模式和 `/loop` 是 Cursor 的功能，所以那些部分在那里可能不能用。
+其他工具也能读这些技能，因为它们使用 Agent Skills 格式。但大多数工作流技能，包括 `/poteto-mode`、`/how` 和 `/teach`，会启动 Cursor 子代理，其中一些带按角色划分的模型，而自定义模式和 `/loop` 是 Cursor 的功能，所以那些部分在那里可能不能用。
 
 ## 用 `/poteto-mode` 开始一项任务
 

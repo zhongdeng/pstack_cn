@@ -72,7 +72,7 @@ flowchart TD
 /sharpen write a migration guide for the v2 config format.
 ```
 
-agent 会说出顶尖专业人士会做哪些你没开口要的事，他们会从最原始的什么材料起步，他们会用的方法和工具，以及除了你或 agent 之外，什么能表明结果是对的。然后它改写你的提示词，让它正好要这些，更深，但不是更大，并让你的选择保持开放。它不执行任务。读那份改写，然后发送它，例如配上 `/poteto-mode`。
+agent 会说出顶尖专业人士会做哪些你没开口要的事，他们会从最原始的什么材料起步，他们会用的方法和工具，以及除了你或 agent 之外，什么能表明结果是对的。然后它改写你的提示词，让它正好要这些，更深，但不是更大。改写要求 agent 把实验能裁定的任何选择做成原型，并根据观察到的结果推荐一个选项，并把产品和偏好选择留给你。它不执行任务。读那份改写，然后发送它，例如配上 `/poteto-mode`。
 
 ## 后续从短
 
@@ -132,7 +132,7 @@ keep going until done
 
 你稍后才评审的工作会经由 [`/figure-it-out`](../../skills/figure-it-out/SKILL.md) 路由，它会设计这次运行的阶段，并保留一份 [`/show-me-your-work`](../../skills/show-me-your-work/SKILL.md) 决策日志。[在你睡觉时跑工作](./07-overnight.md)讲完整的通宵约定。
 
-**陷阱：** 不要在提示词里枚举 skill（“use /how, then /architect, then /arena...”）。行动手册已经排好了它们的顺序，手写的顺序通常会重排或丢掉行动手册本来会保留的步骤。只有在你想覆盖某个具体选择时，才点名一个 skill。
+**陷阱：** 不要在提示词里枚举 skill（“use /architect, then /arena, then /interrogate...”）。行动手册已经排好了它们的顺序，手写的顺序通常会重排或丢掉行动手册本来会保留的步骤。只有在你想覆盖某个具体选择时，才点名一个 skill。
 
 完整的路由规则见 [`poteto-mode`](../../skills/poteto-mode/SKILL.md) 本身。
 

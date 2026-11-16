@@ -12,7 +12,7 @@
 /architect design the import pipeline before writing any code. i care most about how callers use it.
 ```
 
-[`/architect`](../../skills/architect/SKILL.md) 先把自己安放到地面上，对设计触及的代码运行 `/how`，在它移动所有权或分层时运行 `/why`。然后它运行 `/arena`，产出相互竞争的设计草图，每一份都先写调用方的用法，接着是类型、签名和一张模块图。
+[`/architect`](../../skills/architect/SKILL.md) 先把自己安放到地面上，追溯设计触及的代码，在它移动所有权或分层时运行 `/why`。然后它运行 `/arena`，产出相互竞争的设计草图，每一份都先写调用方的用法，接着是类型、签名和一张模块图。
 
 默认情况下，它从综合出来的设计直接进入实现。如果你想先看见设计，就说出来：
 
@@ -28,7 +28,7 @@
 /arena take my prompt to the arena verbatim. i want to compare their proposals with yours.
 ```
 
-[`/arena`](../../skills/arena/SKILL.md) 是底下的通用工具。N 个子 agent 并行尝试同一份设计或代码简报，每一个写到自己的工作树或目录。一个来自另一个模型族的只读裁判，按一份评分标准给每个候选打分。当没有其他家族的模型能跑时，协调者跳过裁判，自己选定底稿。协调者把每个候选从头读到尾，选定一份底稿，从落选者那里嫁接进最好的想法，并验证结果。
+[`/arena`](../../skills/arena/SKILL.md) 是底下的通用工具。N 个子 agent 并行尝试同一份设计或代码简报，每一个写到自己的工作树或目录。一个来自另一个模型厂商的只读裁判，按一份评分标准给每个候选打分。当没有其他厂商的模型能跑时，协调者跳过裁判，自己选定底稿。协调者把每个候选从头读到尾，选定一份底稿，从落选者那里嫁接进最好的想法，并验证结果。
 
 ```mermaid
 flowchart LR

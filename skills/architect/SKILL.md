@@ -20,7 +20,7 @@ disable-model-invocation: true
 
 ## 阶段 A：摸清问题
 
-给新代码会碰到的每一个系统建立真实的心智模型。对相关子系统跑 **how** skill。点出一个文件名不算摸清。要产出 `how` 所规定的架构说明。如果设计会重定义所有权或分层，也对现有形态跑 **why** skill，让那份理由变成约束，而不是猜测。
+给新代码会碰到的每一个系统建立真实的心智模型。追溯相关子系统。点出一个文件名不算摸清。为每一个写出架构说明。如果设计会重定义所有权或分层，也对现有形态跑 **why** skill，让那份理由变成约束，而不是猜测。
 
 只有工作确实是从零开始、周围没有要对接的系统时，才跳过阶段 A。
 
@@ -28,7 +28,7 @@ disable-model-invocation: true
 
 带着设计草图这项任务和阶段 A 的摸底产物，跑 **arena** skill。把 `references/runner-prompt.md` 作为每个 runner 的 prompt 传进去。
 
-runner 取自 `pstack-models.mdc` 规则里的 `architect runners` 那一行，用来代替 `arena runners` 那一行。规则或那一行缺失时，用 `claude-opus-5-5-xhigh` 和 `grok-4.7-xhigh-fast`。别名条目和被拒绝的条目，遵循 **arena** skill 阶段 A 里的 runner 规则。
+runner 取自 `pstack-models.mdc` 规则里的 `architect runners` 那一行，用来代替 `arena runners` 那一行。规则或那一行缺失时，用 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-carbon-high`。别名条目和被拒绝的条目，遵循 **arena** skill 阶段 A 里的 runner 规则。
 
 把设计做两遍。综合之前至少要有两个结构上截然不同的候选，哪怕第一个看起来已经够用。这是把 **exhaust-the-design-space** 原则 skill 落实成具体做法。要的是整体形态的替代方案，不是在同一个形态里面打的点状补丁。
 
@@ -69,7 +69,7 @@ Arena 返回一份综合后的设计包。它的综合决策填进理由说明�
 
 推倒的时候：
 
-1. 对已经建出来的东西重跑 **how** skill。
+1. 追溯已经建出来的东西。
 2. 把新约束当作第一天就有的假设来重新设计，见 redesign-from-first-principles。
 3. 先减再加，见 **subtract-before-you-add** 原则 skill。新草图在长大之前，应该比旧的更小。
 4. 回到阶段 B，重跑 arena。

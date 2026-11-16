@@ -4,17 +4,17 @@
 |---|---|
 | repo | `cursor/plugins` |
 | path | `pstack` |
-| commit | `c742dd61706fbacc1b95f1a20b7b988cf096ce6c` |
-| date | 2026-10-28 |
+| commit | `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7` |
+| date | 2026-11-16 |
 
-`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-10-27，`feat(pstack): make Orchestrate agentic…`）。抓取时 `main` 就是这个 SHA。
+`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-11-15，`feat(pstack): new default models, one-file why and how, statechart fixes, sharpen and reflect text (#1236)`）。抓取时 `main` 就是这个 SHA。
 
 ```json
 {
   "upstreamRepo": "cursor/plugins",
   "path": "pstack",
-  "commit": "c742dd61706fbacc1b95f1a20b7b988cf096ce6c",
-  "date": "2026-10-28"
+  "commit": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
+  "date": "2026-11-16"
 }
 ```
 

@@ -162,7 +162,7 @@ apply prove it works. show me the real output, not the build log.
 
 ## 陷阱
 
-- **在提示词里枚举 skill。** “use /how then /architect then /arena” 会重排行动手册已经排好的步骤。陈述目标和约束。只有为了覆盖一个默认时才点名 skill。
+- **在提示词里枚举 skill。** “use /architect then /arena then /interrogate” 会重排行动手册已经排好的步骤。陈述目标和约束。只有为了覆盖一个默认时才点名 skill。
 - **含糊的完成条件。** “让它变得更好”没给 `/loop` 任何可核对的东西。给一条能够通过或失败的命令或产物。
 - **先抛出你对原因的推测。** agent 会搜你指的那个地方。先让它复述问题，再分享你的预感。
 - **采纳第一份设计。** 一次尝试会把模型想到的第一种形状锁死。要原型或 `/architect`，并从证据里挑。

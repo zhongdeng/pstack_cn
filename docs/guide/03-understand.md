@@ -14,7 +14,7 @@ pstack 给你四条进去的路。`/how` 解释代码现在做什么。`/why` �
 /poteto-mode investigate why background jobs time out every few hours. give me what we know, what data you used, and your best hypotheses. don't change any code yet.
 ```
 
-“don't change any code yet” 会把这一次路由到[调查行动手册](../../skills/poteto-mode/playbooks/investigation.md)。它运行 `/how`，对关于动机的问题再加上 `/why`，并返回一份带引用的解释。对于在几个选项之间做选择，它返回一份带权衡表的建议。问 “what data you used” 会让 agent 把证据和猜测分开。当发现指向一处修复时，把修复当作一个新任务开始。
+“don't change any code yet” 会把这一次路由到[调查行动手册](../../skills/poteto-mode/playbooks/investigation.md)。它追溯代码，对关于动机的问题再加上 `/why`，并返回一份带引用的解释。对于在几个选项之间做选择，它返回一份带权衡表的建议。问 “what data you used” 会让 agent 把证据和猜测分开。当发现指向一处修复时，把修复当作一个新任务开始。
 
 ## 用 `/how` 追踪行为
 
@@ -22,7 +22,7 @@ pstack 给你四条进去的路。`/how` 解释代码现在做什么。`/why` �
 /how do we dedupe notifications? is there an n+1 when we look up subscribers?
 ```
 
-问你真正有的那个问题。[`/how`](../../skills/how/SKILL.md) 读代码，并以一位带你上手这个子系统的资深工程师的水平来回答，带上运行时流程、关键类型，以及不那么显然的部分。对于一个大子系统，它会先扇出两到四个只读探索者。对于一个窄问题，它就直接读并解释。
+问你真正有的那个问题。[`/how`](../../skills/how/SKILL.md) 读代码，并以一位带你上手这个子系统的资深工程师的水平来回答，带上运行时流程、关键类型，以及不那么显然的部分。它启动一个只读子 agent，由它探索代码并写出解释。
 
 ## 用 `/why` 挖出历史
 
@@ -30,7 +30,7 @@ pstack 给你四条进去的路。`/how` 解释代码现在做什么。`/why` �
 /why was the retry limit set to five? does the reason still hold?
 ```
 
-[`/why`](../../skills/why/SKILL.md) 从源码管理开始，然后查询你的 MCP 所暴露的各类证据，例如议题跟踪、长篇文档、团队聊天、可观测性、错误跟踪和分析，全部并行。报告引用一切，把直接证据和推断分开，记录稀薄时会说 “appears to”。空结果也会被报告，因为“没人把为什么写下来”本身就是一个答案。
+[`/why`](../../skills/why/SKILL.md) 从记录作答，而不是从代码。它读那些引入这段代码、以及之后每一次改动的 commit 和 PR 讨论，线索稀薄时再看其他来源。回答引用作者写过的话，把 agent 自己的推断标成推断，并说出记录没有回答的部分，因为“没人把为什么写下来”本身就是一个答案。
 
 两者自然地组合。当你怀疑是历史解释了这摊乱，`do why first then how` 是一条好提示词。
 

@@ -32,7 +32,7 @@ pstack 的 skill 使用 Cursor 的名称。在 Claude Code 里，每个会话读
 | Cursor | Claude Code |
 | --- | --- |
 | `claude-<family>-<version>-<effort>[-fast]`，例如 `claude-opus-5-5-xhigh` | `model: "opus"` 和 `effort: "xhigh"`。`model` 只接受 `opus`、`sonnet`、`haiku`、`fable`。丢掉 `-fast`。 |
-| 一个 `grok-*`、`gpt-*` 或其他非 Claude 的 slug | 省略 `model`，让 agent 跑在会话模型上，并说明一声。 |
+| 一个 `gemini-*` 或其他非 Claude 的 slug | 省略 `model`，让 agent 跑在会话模型上，并说明一声。 |
 | `auto` 或 `inherit-parent` | 省略 `model`。 |
 | `pstack-models.mdc` 这条规则，`~/.cursor/rules/pstack-models.mdc` | `~/.claude/rules/pstack-models.md`。Claude Code 会把它载入每一个新会话，所以它的角色行已经在上下文里。如果没有，就读这个文件。如果文件或该角色的行缺失，就用 skill 的默认 slug。 |
 | 一个角色值 `<model> <effort>`，例如 `opus high` | `model: "opus"` 和 `effort: "high"`。 |
@@ -42,7 +42,7 @@ pstack 的 skill 使用 Cursor 的名称。在 Claude Code 里，每个会话读
 Claude Code 会把 `~/.claude/rules/` 里的每一个 `.md` 文件载入每个新会话，所以 `setup-pstack` 把规则写在那里。按它的步骤做，并做这些改动：
 
 - 检测。检测出的模型是 `Agent` 工具 schema 列出的那些 `model` 值，每个都带一个来自其 `effort` 值的 effort。把真实模型写成 `<model> <effort>`，例如 `opus xhigh`。effort 是最后一个 token，所以预算那一步按原文照做即可。
-- 默认值。用上面的行映射每个默认 slug：`claude-opus-5-5-xhigh` 是 `opus xhigh`，`grok-4.7-xhigh-fast` 是 `inherit-parent`。
+- 默认值。用上面的行映射每个默认 slug：`claude-opus-5-5-xhigh` 是 `opus xhigh`，`claude-opus-5-5-high-fast` 是 `opus high`，`claude-fable-5-2-max` 是 `fable max`，`gemini-4-carbon-high` 是 `inherit-parent`。
 - 写入。把 `~/.claude/rules/pstack-models.md` 写成没有 frontmatter，然后是注释行、`# budget` 行，以及第 5 步里每个角色一行。覆盖整个文件。绝不要把角色行放进 `CLAUDE.md` 或 `AGENTS.md`。
 
 ## 路径

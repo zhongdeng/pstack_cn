@@ -40,7 +40,7 @@ Claude Code 安装的是一份生成出来的 pstack 副本，包括这份 readm
 
 刚来？[pstack 指南](./docs/guide/README.md)会带你走完第一个真实任务，从安装和写提示词，一直到验证和通宵运行。卡住了，或者不确定哪个 skill 合适？问 [`/poteto-help`](./skills/poteto-help/SKILL.md)。
 
-就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，这个 mode 按模型的长处分派工作：代码委派（feature、refactoring、bug fix、perf、hillclimb）交给 Grok，而最难的改动、文字和判断交给 Opus 5.5。默认面板是 Opus 5.5 / Grok。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
+就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，这个 mode 按模型的长处分派工作：代码委派（feature、refactoring、bug fix、perf、hillclimb）、文字和判断交给 Opus 5.5，而最难的改动交给 Fable 5.2。默认面板是 Fable 5.2 / Opus 5.5 / Gemini 4 Carbon。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
 
 ## 用法
 
@@ -109,7 +109,7 @@ morning.
 
 ## skill
 
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md) 会在某一步需要时替你运行其中大部分（`how`、`why`、`architect`、`arena`、`swarm`、`interrogate`、`unslop`、`no-comments`、`technical-writing`、`tdd`，以及各条原则）。下面这张表是给你想直接用某一个的时候看的：
+[`/poteto-mode`](./skills/poteto-mode/SKILL.md) 会在某一步需要时替你运行其中大部分（`why`、`architect`、`arena`、`swarm`、`interrogate`、`unslop`、`no-comments`、`technical-writing`、`tdd`，以及各条原则）。下面这张表是给你想直接用某一个的时候看的：
 
 ```
 /how do we cancel runs? do we have an n+1 when we look up every run to cancel?
@@ -127,9 +127,9 @@ morning.
 | [`/poteto-mode`](./skills/poteto-mode/SKILL.md) | 任何非平凡任务的默认入口。 |
 | [`/poteto-help`](./skills/poteto-help/SKILL.md) | 你刚接触 pstack，或者不确定哪个 skill、哪份行动手册或哪条原则合适。它弄清你想做什么，回答那一部分，并交给你一条可以照着输入的提示词。只有你输入 `/poteto-help` 时才会运行。 |
 | [`/in-your-own-words`](./skills/in-your-own-words/SKILL.md) | 你想让 agent 在开始之前先复述你的目标和问题。只有你输入 `/in-your-own-words` 时才会运行。 |
-| [`/sharpen`](./skills/sharpen/SKILL.md) | 你想在发送之前把一条提示词改得更深，而不是更大：顶尖专业人士会做哪些你没开口要的事，他们会从什么原始材料起步，他们的方法和工具，以及一份能证明结果正确的外部核对。它交回改写后的提示词，并让你的选择保持开放。它不执行任务。只有你输入 `/sharpen` 时才会运行。 |
+| [`/sharpen`](./skills/sharpen/SKILL.md) | 你想在发送之前把一条提示词改得更深，而不是更大：顶尖专业人士会做哪些你没开口要的事，他们会从什么原始材料起步，他们的方法和工具，以及一份能证明结果正确的外部核对。它交回改写后的提示词，这份提示词要求 agent 把实验能裁定的任何选择做成原型，并把产品和偏好选择留给你。它不执行任务。只有你输入 `/sharpen` 时才会运行。 |
 | [`/how`](./skills/how/SKILL.md) | 你想要一份某个子系统如何工作的走读。 |
-| [`/why`](./skills/why/SKILL.md) | 你想知道为什么某样东西要做成这样。它在运行时发现可用的 MCP，并并行查询每一类证据（源码管理、议题跟踪、长篇文档、实时聊天、基础设施可观测性、错误跟踪、分析数仓）。 |
+| [`/why`](./skills/why/SKILL.md) | 你想知道为什么某样东西要做成这样。它从记录作答，而不是从代码：引入它、以及之后每一次改动的那些 commit 和 PR 讨论，线索稀薄时再看其他来源。它引用作者写过的话，把自己的推断标出来，并说出记录没有回答的部分。 |
 | [`/recall`](./skills/recall/SKILL.md) | 你正在开始或恢复工作，想把你在某个话题上的近期上下文，从你自己的聊天历史和共享记录里重建出来，交回一份紧凑的当前状态简报。 |
 | [`/ketchup`](./skills/ketchup/SKILL.md) | 你想知道这次聊天自你上一条消息以来变了什么，用白话和小图呈现，并把每一件正等你处理的事项列出来，只凭这条回复就能做决定，哪怕这会让回复变长。 |
 | [`/ketchup-video`](./skills/ketchup-video/SKILL.md) | 你想把 `/ketchup` 的进度补课做成一段带字幕的幻灯片短视频，正等你处理的那些事项以文字放在下面。 |
@@ -278,7 +278,7 @@ Cursor 已经有一个很好的 Plan 模式，它和 pstack 配合得很好。�
 
 模型也可以配置。输入 [`/setup-pstack`](./skills/setup-pstack/SKILL.md)。它检测你有权访问的模型，并写一条始终应用的小规则，把每个角色（代码、判断、各个评审面板）映射到一个模型。每个 skill 都会读它，规则缺失时回退到合理的默认值，所以你只覆盖你想改的。
 
-当某个默认值发生变化，变化之前写好的规则仍会钉住旧默认值。删掉那些角色行，或者删掉文件，然后重新运行 `/setup-pstack`。重跑会保留任何一个模型与默认值不同的角色。
+当某个默认值发生变化，变化之前写好的规则仍会钉住旧默认值，直到你再次运行 `/setup-pstack`。那一次运行会替换它认得的旧默认值，并保留任何其他模型与默认值不同的角色。要丢掉一个它不认得的钉，先删掉该角色的那一行，或者删掉文件。
 
 ## 自动化
 

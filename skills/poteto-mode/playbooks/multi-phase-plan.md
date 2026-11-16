@@ -10,7 +10,7 @@
 6. 运行 `node pstack/skills/poteto-mode/scripts/check-plan.mjs <plan.md>`，并修掉它打印的每一行（**encode-lessons-in-structure** 原则技能）。
 7. 交回。贴出计划路径和脚本的输出，然后停。执行在操作者明确放行时开始，走计划所点名的执行手册。
 
-**验证。** 仅有测试不是充分的验证。一个 PR 只有在它的单元、实机和性能格子全部勾上时才算验证过（**prove-it-works** 原则技能）。那句话就是验证规则。每一个验证块都以它开头。实机块是强制的。十条通道在 PR 的 head 上，经它的控制技能驱动真实交互面，按 **swarm** 技能，使用 `swarm workers` 模型（默认 `grok-4.7-xhigh-fast`）。每一条通道是一格，带一个具体场景、它保存的截图，以及它的通过谓词。一条通道是 **Regression lane against trunk.** 它在主干和 head 上跑同一个承重场景。如果主干没有这个功能，这条通道记下这个事实，并门控 diff 所增加的行为，加上用户在等的终态，而不是发明一个主干结果。性能门禁是双侧的。主干和 head 都必须产出点名的指标。如果主干缺少这个功能，还要隔离 diff 所增加的工作，并为那项工作加上用户在等的端到端状态设一个绝对预算。不要在不相同的场景之间声称一个比值。性能块点名指标、交错的探测、先测到的主干基线，以及带有失败数字的规则。一个改变交互的 PR 要过审查门禁。操作者在聊天里带着截图和一段视频审查它，然后才合并。一个不改变交互的 PR 写 `**Review gate.** None. <PR id> is not review-gated.`，并且它下面没有格子。
+**验证。** 仅有测试不是充分的验证。一个 PR 只有在它的单元、实机和性能格子全部勾上时才算验证过（**prove-it-works** 原则技能）。那句话就是验证规则。每一个验证块都以它开头。实机块是强制的。十条通道在 PR 的 head 上，经它的控制技能驱动真实交互面，按 **swarm** 技能，使用 `swarm workers` 模型（默认 `claude-opus-5-5-high-fast`）。每一条通道是一格，带一个具体场景、它保存的截图，以及它的通过谓词。一条通道是 **Regression lane against trunk.** 它在主干和 head 上跑同一个承重场景。如果主干没有这个功能，这条通道记下这个事实，并门控 diff 所增加的行为，加上用户在等的终态，而不是发明一个主干结果。性能门禁是双侧的。主干和 head 都必须产出点名的指标。如果主干缺少这个功能，还要隔离 diff 所增加的工作，并为那项工作加上用户在等的端到端状态设一个绝对预算。不要在不相同的场景之间声称一个比值。性能块点名指标、交错的探测、先测到的主干基线，以及带有失败数字的规则。一个改变交互的 PR 要过审查门禁。操作者在聊天里带着截图和一段视频审查它，然后才合并。一个不改变交互的 PR 写 `**Review gate.** None. <PR id> is not review-gated.`，并且它下面没有格子。
 
 **控制技能。** 按交互面来选。浏览器、Electron 和 Web UI 用来自 `cursor-team-kit` 的 `control-ui`。CLI 和 TUI 用来自 `cursor-team-kit` 的 `control-cli`。原生移动端用仓库里任何能驱动模拟器的技能。一个碰到两个交互面的 PR 在两边都有通道。一个没有控制技能的交互面是附录 C 里的一项风险，并且它的实机块仍然点名每一条通道如何驱动它。
 
@@ -149,7 +149,7 @@ Each live lane runs on its own cloud VM at the PR head. Drive through `control-u
 
 ## Appendix D. Links and reading list
 
-<Docs to read before editing. Which PRs get `pstack/skills/how/SKILL.md` and `pstack/skills/interrogate/SKILL.md`. The trail per `pstack/skills/show-me-your-work/SKILL.md`.>
+<Docs to read before editing. Which PRs get `pstack/skills/interrogate/SKILL.md`. The trail per `pstack/skills/show-me-your-work/SKILL.md`.>
 ````
 
 **回复：** 计划路径、各 PR id 及其依赖和过审查门禁的那一组、原型证明了什么以及什么仍然未证明，还有检查脚本的输出。
