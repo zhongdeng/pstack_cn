@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 1. 写明每个候选正在产出的产物。
 2. 推导评分标准，3 到 6 条可打分的具体标准，说明成功在*这项*任务上是什么样。它是阶段 D 里挑选者的工具。候选只看得到任务。
-3. 选定 runner。用 `~/.cursor/rules/pstack-models.mdc` 里的 `arena runners` 那一行。规则或那一行缺失时，默认在 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-carbon-high` 上各来一个。这一行里的 `auto` 或 `inherit-parent` 条目表示父模型，所以对它省略 `model`。如果 Task 工具拒绝了某个配置好的条目，就让这个席位跑在它所属家族的默认模型上，并说明这一点。家族按前缀划分，最长的匹配前缀优先：`claude-fable-*`、`claude-*` 和 `gemini-*`。比较之前先丢掉开头的 `cursor-`。任何其他 slug 的家族，是它第一个连字符之前的那段文字。一个家族的默认值，就是上面默认列表里它的那个条目。如果该家族没有默认值，或者 Task 工具拒绝了那个默认值，就用报错信息里同一家族最接近的合法 slug，没有时就丢掉这个席位并说明。丢掉的席位让 runner 少于两个时，补 runner 直到有两个，那一行只有一个条目时补到一个。每个补上的 runner 跑在某个还在的 runner 的模型上，一个都不剩时省略 `model`，让它跑在父模型上，并说明。arena 覆盖多个设计方向时，多拉几个 runner。工作的瓶颈在生成、而不在判断时，同一个模型用 N 次。按 **poteto-mode** skill 的 Subagents 一节，为这项工作给每个子 agent 选定推理档位，以及 fast 或 standard 速度。
+3. 从 `~/.cursor/rules/pstack-models.mdc` 的 `arena runners` 那一行挑选 runner，默认是 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-carbon-high`。`auto` 或 `inherit-parent` 条目就是父模型，所以省略 `model`，并派生 `generalPurpose`。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，或丢掉这个席位，至少留两个 runner，并说明。家族按前缀划分，最长的匹配优先：先丢掉开头的 `cursor-`，然后是 `claude-fable-*`、`claude-*` 和 `gemini-*`。任何其他 slug 的家族，是它第一个连字符之前的那段文字。多个设计方向就多拉几个，工作的瓶颈在生成、而不在判断时，同一个模型重复用。按 **poteto-mode** skill 的 Subagents 一节，为每个子 agent 选定推理档位。
 4. 给每个候选自己的产出位置（能用 git worktree 就用，否则用 `/tmp/arena-<slug>/candidate-<n>/`），见 **separate-before-serializing-shared-state** 原则 skill。
 
 ## 阶段 B：铺开
@@ -25,7 +25,7 @@ disable-model-invocation: true
 
 ## 阶段 C：交叉评判
 
-阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行里选一个模型。规则或那一行缺失时，从 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-carbon-high` 里选。拉起一个只读的评判子 agent。评判者绝不会来自父模型的厂商。厂商就是阶段 A 第 3 步所定义的家族，只是 `claude-fable-*` 和 `claude-*` 算同一个厂商。只按池的顺序试其他厂商的条目。`auto` 或 `inherit-parent` 条目就是父模型，所以它从不评判。用默认池时，Claude 父模型得到 `gemini-4-carbon-high`。任何其他厂商的父模型先得到 `claude-fable-5-2-high`，然后是 `claude-opus-5-5-high-fast`。如果 Task 工具拒绝了某个条目，就用报错信息里同一模型最接近的档位或速度的合法 slug，没有时就移到下一个条目。如果没有其他厂商的条目能跑，就用同样的方式试默认池里其他厂商的条目。那些也没有一个能跑时，跳过评判者，在阶段 D 里独自选定底稿，并说明。如果你不知道父模型是什么，就按池的顺序试池里的真实 slug，并说明厂商检查没有跑。评判者按路径标签看到评分标准和各候选，给每条标准打分，并推荐一份底稿、附上理由。它和你在阶段 D 的阅读并行进行。候选还在写的时候，不要拉起它。
+阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行拉起一个只读评判者，默认是 `claude-opus-5-5-high-fast`、`gemini-4-carbon-high`。评判者绝不会来自父模型的厂商，而这次检查里 Fable 算 Claude，所以用另一个厂商的第一个条目。`auto` 或 `inherit-parent` 条目就是父模型。如果你不知道父模型是什么，就用第一个真实 slug，并说明厂商检查没有跑。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，然后试下一个这样的条目，或者跳过评判者，并说明。你在阶段 D 阅读时，评判者按路径标签、对照每一条评分标准给每个候选打分，并推荐一份底稿。
 
 ## 阶段 D：选定底稿
 

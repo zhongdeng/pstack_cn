@@ -28,7 +28,7 @@ disable-model-invocation: true
 
 - 干活之前先建验证测试装置，基线从改动前的状态采集，让检查读起来是「旧值对新值」。
 - 对单向门的设计决策，跑 **architect** skill（它会跑 **arena**）。形态已经具体的机械性工作，跳过它。对已经定下来的设计再跑第二次 arena，就是过度工程（**laziness-protocol** 原则 skill）。
-- 决定什么要铺开。只沿着接缝并行，并给每个工人自己的 worktree 或分支（**separate-before-serializing-shared-state** 原则 skill）。不要铺得过开。按 **poteto-mode** skill 的 Subagents 一节，为这项工作给每个子 agent 选定推理档位，以及 fast 或 standard 速度。
+- 决定什么要铺开。只沿着接缝并行，并给每个工人自己的 worktree 或分支（**separate-before-serializing-shared-state** 原则 skill）。不要铺得过开。按 **poteto-mode** skill 的 Subagents 一节，为这项工作给每个子 agent 选定推理档位。
 - 把设计好的阶段清单写下来。人要审的就是这份清单。
 
 然后执行这个设计。把它的步骤作为具体条目加进待办清单，放在阶段 C 和阶段 D 两条之间。每一步都按阶段 C 的循环纪律来跑，并把阶段 D 的日志织进这些步骤，每落地一步记一行，而不是把整条轨迹留到最后。

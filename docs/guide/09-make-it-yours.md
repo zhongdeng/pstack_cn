@@ -28,7 +28,7 @@ poteto-mode 是一个人的风格。它底下的行动手册、路由和模型�
 /reflect that took way too long. capture what we learned so the next run doesn't repeat it.
 ```
 
-[`/reflect`](../../skills/reflect/SKILL.md) 把对话记录发给三个并行评审者，然后一个综合者把提议分进 `Accepted`、`Rejected` 和 `Backlog`，并在任何 skill 改动之前等待你的批准。只有当一条提议会改变未来的某个决定时才批准它。一次古怪的会话是轶事，不是规则。
+[`/reflect`](../../skills/reflect/SKILL.md) 读对话记录，只留下会改变未来某个代理做法的教训，并把提议分进 `Accepted`、`Rejected` 和 `Backlog`。它在任何 skill 改动之前等待你的批准。只有当一条提议会改变未来的某个决定时才批准它。一次古怪的会话是轶事，不是规则。
 
 ## 用 `/correct` 修好环境
 

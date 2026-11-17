@@ -56,7 +56,7 @@
 
 ## 提交之前先清理
 
-[开 PR 行动手册](../../skills/poteto-mode/playbooks/opening-a-pr.md)在每次提交之前对 diff 运行 `/deslop`，并把 [`/unslop`](../../skills/unslop/SKILL.md) 用到 PR 描述和提交正文上。`/deslop` 在 `cursor-team-kit` 插件里，不在 pstack 里。如果你没有它，用白话要求同样的结果：去掉叙述性注释、没有依据的守卫、死去的兼容路径，以及无关的编辑。
+[开 PR 行动手册](../../skills/poteto-mode/playbooks/opening-a-pr.md)在每次提交之前对 diff 运行 `/deslop`，而 poteto-mode 把 [`/unslop`](../../skills/unslop/SKILL.md) 用到 PR 描述和提交正文上。`/deslop` 在 `cursor-team-kit` 插件里，不在 pstack 里。如果你没有它，用白话要求同样的结果：去掉叙述性注释、没有依据的守卫、死去的兼容路径，以及无关的编辑。
 
 对于文字，`/unslop` 接受一个目标，以及你有的任何额外规则：
 

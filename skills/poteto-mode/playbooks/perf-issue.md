@@ -14,7 +14,7 @@
    7. 更便宜地做。
 
    更早的一条口诀已经达到目标时，就停。
-3. 根据追踪来计划修复。如果它跨过函数边界，先用 `architect`。把实现委托给一个子代理，使用你配置的 perf-issue 模型（默认 `claude-opus-5-5-xhigh`）。按子代理一节，为每个子代理选择这项工作所需的推理档位，以及 fast 或 standard 速度。审查 diff。采集一条修复后的追踪。
+3. 根据追踪来计划修复。如果它跨过函数边界，先用 `architect`。把实现委托给一个子代理，使用你配置的 perf-issue 模型（默认 `claude-opus-5-5-xhigh-fast`）。按子代理一节，为每个子代理选择这项工作所需的推理档位。审查 diff。采集一条修复后的追踪。
    应用 **sequence-verifiable-units** 原则技能，先验证每一次尝试，再试下一次。
 4. 解析并比较产物（JSON 到 sqlite，做 diff）。「Inconclusive」或交互面不对，都不算通过。标出来。
 5. 在 PR 里引用这次测量。

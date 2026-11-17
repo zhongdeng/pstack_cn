@@ -71,7 +71,7 @@ flowchart TD
 
 ## 当这一夜装的是一个队列，而不是一个任务
 
-上面的约定把一个任务推到一个完成条件。有些夜里装得更多，一个相互独立的改动队列，或一整项工程。三份行动手册把同一份信任放大。
+上面的约定把一个任务推到一个完成条件。有些夜里装得更多，一个相互独立的改动队列，或一整项工程。两份行动手册和一项技能把同一份信任放大。
 
 [Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md) 把一个相互独立的 PR 队列跑到已合并。每个 PR 有一个负责人 agent，把它从构建带到合并，没有任何负责人凭自己的裁决合并。一群全新的验证者检查负责人那个代码就绪的 head。之后的一次变基或小修复得到一个全新的验证者，只有新行为或一大份新 diff 才会再次叫来整群 swarm。只有对将要合并的那份补丁的一份干净裁决，才授权这次合并：
 
@@ -85,15 +85,15 @@ flowchart TD
 /poteto-mode autopilot these five changes, but don't merge. i'll land them in the morning.
 ```
 
-[编排](../../skills/poteto-mode/playbooks/orchestrate.md)用于一项比任何单个 agent 都活得久的工程：跨多日、许多堆叠的 PR、在一个常设协调者对话之下的成队子 agent。协调者决定哪一个 agent 做每一块工作，检查每一个产出了什么，并且自己从不写代码。如果一个 agent 能在一次会话里做完这份工作，行动手册自己会把你送回上面的通宵约定：
+一整项工程，例如一次跨许多包的迁移，没有自己的行动手册。`/poteto-mode` 把大的或横切的工作路由到 [`/figure-it-out`](../../skills/figure-it-out/SKILL.md)，由它为这次工作设计一次严格的运行：
 
 ```text
-/poteto-mode orchestrate the store migration. own it until every package is converted and merged. i'll check in twice a day.
+/poteto-mode migrate every package to the new store. own it until each one is converted and merged. i'll check in twice a day.
 ```
 
 ## 并行跑很多项目
 
-一个 [Cursor Project](https://cursor.com/blog/projects) 给一个协调者 agent 一条持久的线程。协调者不写代码。它指挥子 agent，子 agent 默认在云端运行，所以笔记本合上时工作仍在继续。这就是编排行动手册所期望的形状。给你发给协调者的提示词以 `/poteto-mode` 开头，它拉起的子 agent 就遵循行动手册。
+一个 [Cursor Project](https://cursor.com/blog/projects) 给一个协调者 agent 一条持久的线程。协调者不写代码。它指挥子 agent，子 agent 默认在云端运行，所以笔记本合上时工作仍在继续。给你发给协调者的提示词以 `/poteto-mode` 开头，它拉起的子 agent 就遵循行动手册。它启动的每个代理都先读 [`worker.md`](../../skills/poteto-mode/worker.md)，这样工作者守住开工说明里的标准，能撤销的决定自己做而不来问你，并把 PR 开成可审查。
 
 几条习惯有帮助：
 

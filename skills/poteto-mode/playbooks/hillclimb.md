@@ -9,7 +9,7 @@
 3. 经 **show-me-your-work** 技能打开决策日志。一份 `decision.tsv`，每次尝试一行：id、hypothesis、change、before、after、delta、tests、verdict（kept 或 reverted）、note。每次尝试之前读它。把它留在树外（gitignore）。
 4. 每一条假设都奠基在第 1 步的架构模型上，这样它点名一个具体机制（「把 X 从启动路径上推迟，因为它挡住了首次绘制」），而不是「试试给什么东西做记忆化」。对性能指标，按性能问题手册（`playbooks/perf-issue.md`）第 2 步里的性能口诀来给假设排序。只借用它们的顺序，不借用那一步的停止规则。
 5. 循环，每次迭代一条假设：
-   - 把改动交给一个子代理，使用你配置的 hillclimb 模型（默认 `claude-opus-5-5-xhigh`），范围收紧。按子代理一节，为每个子代理选择这项工作所需的推理档位，以及 fast 或 standard 速度。监督并审查 diff，而不是自己去打（**guard-the-context-window** 原则技能）。当几条独立假设同时活着时，把它们扇出到并行子代理，每个在自己的工作树里（**separate-before-serializing-shared-state** 原则技能）。
+   - 把改动交给一个子代理，使用你配置的 hillclimb 模型（默认 `claude-opus-5-5-xhigh-fast`），范围收紧。按子代理一节，为每个子代理选择这项工作所需的推理档位。监督并审查 diff，而不是自己去打（**guard-the-context-window** 原则技能）。当几条独立假设同时活着时，把它们扇出到并行子代理，每个在自己的工作树里（**separate-before-serializing-shared-state** 原则技能）。
    - 用冻结的装置测量前后，并跑回归门禁。
    - 只有指标的移动超过噪声、并且门禁保持绿色时才接受。否则把改动完整回退。一个「也许有用」的微调不保留。
    - 每个被接受的修复一次提交，只暂存你改过的文件（`git add <files>`，绝不要 `-A`）。无论保留还是回退，都记下那一行。

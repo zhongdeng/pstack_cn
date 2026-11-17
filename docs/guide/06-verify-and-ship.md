@@ -131,7 +131,7 @@
 /poteto-mode open the pr. small ordered commits, evidence in the description.
 ```
 
-[开 PR 行动手册](../../skills/poteto-mode/playbooks/opening-a-pr.md)从工作树开始做，把工作变基成小而有序的提交，清理 diff，去掉文字里的 AI 腔，并返回 PR 链接。五个窄 PR 胜过一个胖的，堆叠的后续胜过一条不断长大的分支。
+[开 PR 行动手册](../../skills/poteto-mode/playbooks/opening-a-pr.md)从工作树开始做，把工作变基成小的、可以单独落地的提交，清理 diff，把正文写成一分钟能读完的简报，并把 PR 开成就绪。堆叠的后续胜过一条不断长大的分支。
 
 ## 用看护把 PR 推到可合并
 
@@ -141,7 +141,7 @@
 /poteto-mode babysit this pr. get it green.
 ```
 
-看护盯着这个 PR，在 GitHub 上用附带的监视器，或者在 Origin CLI 可用时用它，并按顺序处理阻塞项：先是冲突，然后是评审线程，然后是 CI。每一个已知的修复都攒成一次 push，这样检查只重启一次，而不是每次修复之后都重启。评论分诊是持怀疑态度的，因为人和机器人会把真正抓到的问题和噪音放在同一个列表里。真正的发现会得到修复，噪音会被驳回，并把反证贴到线程上。当你只想要状态时，把问题问小一点，看护会回答，而不启动这个循环：
+看护盯着这个 PR，在 GitHub 上用附带的监视器，或者在 Origin CLI 可用时用它，并按顺序处理阻塞项：先是冲突，然后是评审线程，然后是 CI。它绝不 rebase，也不强制推送。冲突或基线过期时，它把需要 rebase 的那条分支交回给你。评论分诊是持怀疑态度的，因为人和机器人会把真正抓到的问题和噪音放在同一个列表里。真正的发现会得到修复，噪音会被驳回，并把反证贴到线程上。当你只想要状态时，把问题问小一点，看护会回答，而不启动这个循环：
 
 ```text
 /poteto-mode check on pr 123. anything outstanding?

@@ -19,7 +19,7 @@ disable-model-invocation: true
 
 1. 陈述完成谓词，以及 swarm 必须返回的产物或报告。
 2. 选择形状。划分成切片，让 N 个工作单元在相同的任务书上竞赛，或者两者混合。对于竞赛或混合形状，在启动之前声明 `first pass`、`rank all` 或 `best-of`。
-3. 从 `~/.cursor/rules/pstack-models.mdc` 的 `swarm workers` 行挑选工作单元模型。如果规则或那一行缺失，就用 `claude-opus-5-5-high-fast`。对于 `auto` 或 `inherit-parent`，省略 `model`，这样工作单元跑在父模型上。如果 Task 工具拒绝一个 slug，就用默认值并说明。如果它拒绝默认值，就用它的错误信息里同一家族中最接近的有效 slug。对于模型竞赛，事先点明每一臂的模型。按 **poteto-mode** 技能的 Subagents 一节，为这项工作选择每个子代理的推理级别以及快速或标准速度。
+3. 从 `~/.cursor/rules/pstack-models.mdc` 的 `swarm workers` 行挑选工作单元模型。如果规则或那一行缺失，就用 `claude-opus-5-5-high-fast`。对于 `auto` 或 `inherit-parent`，省略 `model`，这样工作单元跑在父模型上。如果 Task 工具拒绝一个 slug，就用默认值并说明。如果它拒绝默认值，就用它的错误信息里同一家族中最接近的有效 slug。对于模型竞赛，事先点明每一臂的模型。按 **poteto-mode** 技能的 Subagents 一节，为这项工作选择每个子代理的推理级别。
 4. 当工作单元要写东西时，给每个工作单元它自己的可写输出。当工作单元要验证或测量提交时，每份任务书点明确切的 SHA。测量任务书还要点明方法（样本数、一个样本是什么、顺序）。工作单元在它的结果里把两者都记下来。
 
 ## 阶段 B：扇出

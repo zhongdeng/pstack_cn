@@ -49,7 +49,7 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 
 ## 用 `/poteto-mode` 开始一项任务
 
-`/poteto-mode` 把任务匹配到一份行动手册，把行动手册的步骤复制进待办列表，并在步骤需要时运行其他技能。它跳过的步骤仍留在列表里，记为 `skip: <reason>`。一条好的提示词陈述目标，以及如何判断做完了。它不列举技能，因为手写的顺序往往会丢掉或重排行动手册会保留的步骤。在帮忙措辞之前，先读 [`references/prompting.md`](references/prompting.md)。[指南第 2 页](../../docs/guide/02-poteto-mode.md) 里有例子。
+`/poteto-mode` 把任务匹配到一份行动手册，把行动手册的步骤复制进待办列表，并在步骤需要时运行其他技能。一条好的提示词陈述目标，以及如何判断做完了。它不列举技能，因为手写的顺序往往会丢掉或重排行动手册会保留的步骤。在帮忙措辞之前，先读 [`references/prompting.md`](references/prompting.md)。[指南第 2 页](../../docs/guide/02-poteto-mode.md) 里有例子。
 
 `/poteto-mode` 是否保持开启，取决于用户如何启动它：
 
@@ -106,16 +106,15 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 
 - `/how` 解释代码做什么。`/why` 解释原因。`/teach` 运行其中一个或两个，并把结果用白话讲出来。
 - `/arena` 给每个工作单元同一份任务书，并合并最好的部分。`/swarm` 把工作分成切片或一场竞赛，并返回一份报告。
-- `/architect` 在定下设计之后立刻实现。加上「with checkpoint」，就可以在它写代码之前审查设计。
 - `/interrogate` 审查 diff。`/blast-radius` 寻找 diff 之外的破坏，并证明那一个让变更安全的事实。
 - `/recall` 跨最近的对话重建上下文。`/ketchup` 只覆盖这次对话中用户上一条消息以来的部分。恢复某一段特定对话或分支，是 Session pickup 行动手册。
-- `/figure-it-out` 设计一次严格的运行。Orchestrate 行动手册运行一个跨越数天和许多 PR 的项目。Autonomous run 行动手册把一项任务驱动到一个完成条件。
+- `/figure-it-out` 设计一次严格的运行。Autonomous run 行动手册把一项任务驱动到一个完成条件。
 
 不在 pstack 里：
 
 - `/deslop`、`control-cli` 和 `control-ui` 随 `cursor-team-kit` 插件发布。
 - `/loop` 和 `/create-skill` 是 Cursor 内置的。
-- pstack 没有 `/orchestrate` 技能。Orchestrate 是一份 `/poteto-mode` 行动手册。如果斜杠菜单显示 `/orchestrate`，那是另一个插件提供的。
+- pstack 没有 `/orchestrate` 技能。如果斜杠菜单显示 `/orchestrate`，那是另一个插件提供的。
 
 ## 行动手册与原则
 
@@ -128,7 +127,7 @@ pstack 是为 Cursor 做的，它也可以装进 Claude Code，用 `/plugin mark
 - 「对这个队列全自动驾驶」运行 Autopilot-full。「自动驾驶，先不要合并」运行 Autopilot-stack。
 - 「跑 eval 行动手册」运行 Eval。
 
-没有 `/poteto-mode` 时，像「照看这个 pr」这样的说法可能会改为启动 Cursor 自己的、做同一件事的技能。[`poteto-mode`](../poteto-mode/SKILL.md) 的 Playbooks 一节列出每一份行动手册以及它何时适用。[指南第 6 页](../../docs/guide/06-verify-and-ship.md) 涵盖开 PR、照看和落地 PR。
+没有 `/poteto-mode` 时，像「照看这个 pr」这样的说法可能会改为启动 Cursor 自己的、做同一件事的技能。[`poteto-mode`](../poteto-mode/SKILL.md) 的 Playbooks 一节列出每一份行动手册。[指南第 6 页](../../docs/guide/06-verify-and-ship.md) 涵盖开 PR、照看和落地 PR。
 
 pstack 没有规划技能。Cursor 的 Plan Mode 可以与它一起使用。对于跨越多个阶段或叠放 PR 的工作，向 `/poteto-mode` 要一份计划会运行 [Multi-phase plan 行动手册](../poteto-mode/playbooks/multi-phase-plan.md)，它写下计划并不实现它。对于设计问题，Prototype 行动手册或 `/architect` 会先在代码里把它定下来。
 

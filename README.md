@@ -40,7 +40,7 @@ Claude Code 安装的是一份生成出来的 pstack 副本，包括这份 readm
 
 刚来？[pstack 指南](./docs/guide/README.md)会带你走完第一个真实任务，从安装和写提示词，一直到验证和通宵运行。卡住了，或者不确定哪个 skill 合适？问 [`/poteto-help`](./skills/poteto-help/SKILL.md)。
 
-就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，这个 mode 按模型的长处分派工作：代码委派（feature、refactoring、bug fix、perf、hillclimb）、文字和判断交给 Opus 5.5，而最难的改动交给 Fable 5.2。默认面板是 Fable 5.2 / Opus 5.5 / Gemini 4 Carbon。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
+就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，代码委派（feature、refactoring、bug fix、perf、hillclimb）、文字和判断交给 Opus 5.5，档位是 xhigh，而且没有任何角色跑在 xhigh 之上。在评审组之外，Fable 5.2 只在你点名它，或同一份简报上两次 Opus 5.5 运行都没通过检查时才跑。默认面板是 Fable 5.2 / Opus 5.5 / Gemini 4 Carbon。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
 
 ## 用法
 
@@ -50,7 +50,7 @@ Claude Code 安装的是一份生成出来的 pstack 副本，包括这份 readm
 
 ### 直接用 [`/poteto-mode`](./skills/poteto-mode/SKILL.md)
 
-这个 skill 是主快捷方式。每当我需要 agent 做严格的工程工作时，我就用它。它带有二十三份行动手册：
+这个 skill 是主快捷方式。每当我需要 agent 做严格的工程工作时，我就用它。它带有二十二份行动手册：
 
 ```
 /poteto-mode this pr has a subtle bug where the scroll drifts every 750ms even when idle. repro
@@ -63,7 +63,7 @@ morning.
 ```
 
 <details>
-<summary>二十三份行动手册</summary>
+<summary>二十二份行动手册</summary>
 
 | 行动手册 | 适用于 |
 |---|---|
@@ -82,7 +82,6 @@ morning.
 | [看护](./skills/poteto-mode/playbooks/babysit.md) | 把一个 PR 或一条栈推到可合并：冲突、评审线程、CI。 |
 | [合入](./skills/poteto-mode/playbooks/shipping.md) | 独立验证一条全绿的栈，然后把连续的已验证部分自底向上合入，默认经 GitHub，Origin 可用时经 Origin。 |
 | [自主运行](./skills/poteto-mode/playbooks/autonomous-run.md) | 把一个长任务一路推进到完成，中途不停。 |
-| [编排](./skills/poteto-mode/playbooks/orchestrate.md) | 交给单独一个协调者对话的常设项目：跨多日、许多堆叠的 PR、成队的子 agent。 |
 | [autopilot-full](./skills/poteto-mode/playbooks/autopilot-full.md) | 把相互独立的 PR 跑到已合并，每个 PR 一个负责人。一次 swarm 验证每一个代码就绪的 head，此后对补丁的每一次改动都重新检查一次。 |
 | [autopilot-stack](./skills/poteto-mode/playbooks/autopilot-stack.md) | 去掉合并的 autopilot-full。构建并验证 PR，供操作者评审并合入，一个 PR 只叠在它所基于的那个 PR 上。 |
 | [会话接手](./skills/poteto-mode/playbooks/session-pickup.md) | 恢复或接手先前某个 agent 进行中的工作。 |

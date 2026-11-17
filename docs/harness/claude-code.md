@@ -8,7 +8,7 @@ pstack 的 skill 使用 Cursor 的名称。在 Claude Code 里，每个会话读
 | --- | --- |
 | `Task` | `Agent` |
 | `AskQuestion` | `AskUserQuestion`。在 `-p` 模式下它不存在，所以用纯文本提问。 |
-| 打开一份待办列表 | 如果会话提供了 `TodoWrite` 就用它。否则把列表留在你的回复里，并在每个阶段更新。 |
+| 打开一份待办列表，或把步骤抄进待办工具 | 如果会话提供了 `TodoWrite` 就用它。否则把列表留在你的回复里，并在每个阶段更新。 |
 | 运行另一个 pstack skill（`/name`，或 “the **name** skill”） | `Read` `<pstack>/skills/<name>/SKILL.md` 并遵循它。`Skill` 工具会拒绝大多数 pstack skill。当你告诉用户去输入它时，写成 `/pstack:<name>`。 |
 | `Grep`、`Glob` | 当会话没有 `Grep` 或 `Glob` 时，用带 `rg` 的 `Bash`。 |
 
@@ -18,6 +18,7 @@ pstack 的 skill 使用 Cursor 的名称。在 Claude Code 里，每个会话读
 | --- | --- |
 | `subagent_type: generalPurpose` | `subagent_type: "general-purpose"` |
 | `poteto-agent`、`comment-sicko` | `pstack:poteto-agent`、`pstack:comment-sicko` |
+| `poteto-agent` 文件里的 `model:` 行 | 它写的是 Cursor 的 slug。每一次拉起 `pstack:poteto-agent` 的 `Agent` 调用都要带上 `model` 和 `effort`，按模型表来映射，这样那个 slug 绝不会到达 API。 |
 | `readonly: true` | `subagent_type: "Explore"`。它保留 `Bash`，所以简报里还要写上 “do not edit files”，并且你事后检查 `git status`。 |
 | `readonly: false` | `general-purpose`。它保留会话的 MCP 服务器。 |
 | `environment: "cloud"` | `isolation: "worktree"`。写明工作者要检出的分支或 commit。 |
@@ -42,7 +43,7 @@ pstack 的 skill 使用 Cursor 的名称。在 Claude Code 里，每个会话读
 Claude Code 会把 `~/.claude/rules/` 里的每一个 `.md` 文件载入每个新会话，所以 `setup-pstack` 把规则写在那里。按它的步骤做，并做这些改动：
 
 - 检测。检测出的模型是 `Agent` 工具 schema 列出的那些 `model` 值，每个都带一个来自其 `effort` 值的 effort。把真实模型写成 `<model> <effort>`，例如 `opus xhigh`。effort 是最后一个 token，所以预算那一步按原文照做即可。
-- 默认值。用上面的行映射每个默认 slug：`claude-opus-5-5-xhigh` 是 `opus xhigh`，`claude-opus-5-5-high-fast` 是 `opus high`，`claude-fable-5-2-max` 是 `fable max`，`gemini-4-carbon-high` 是 `inherit-parent`。
+- 默认值。用上面的行映射每个默认 slug：`claude-opus-5-5-xhigh-fast` 是 `opus xhigh`，`claude-opus-5-5-high-fast` 是 `opus high`，`claude-fable-5-2-high` 是 `fable high`，`gemini-4-carbon-high` 是 `inherit-parent`。
 - 写入。把 `~/.claude/rules/pstack-models.md` 写成没有 frontmatter，然后是注释行、`# budget` 行，以及第 5 步里每个角色一行。覆盖整个文件。绝不要把角色行放进 `CLAUDE.md` 或 `AGENTS.md`。
 
 ## 路径

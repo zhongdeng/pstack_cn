@@ -24,7 +24,7 @@ Cursor 会确认插件已安装。
 
 [`/setup-pstack`](../../skills/setup-pstack/SKILL.md) 检测你有权访问的模型，询问推理预算，向你展示每个角色（代码委派、判断、各个评审面板），并问你想要什么。回答这些问题。它会写下 `~/.cursor/rules/pstack-models.mdc`，一条每个 pstack skill 都会读的小规则。
 
-默认值和 `large` 预算相同。大多数角色跑在 `xhigh` 推理上。最难的改动跑在 `max`，各个评审面板和 swarm 工作者跑在 `high`。`unlimited` 把每个角色往上提一档，上限是 `max`。Gemini 的上限是 `high`，所以它停在那里。`medium` 把每个角色往下降一档，`small` 往下降两档，两者都会少花 token。
+默认值和 `large` 预算相同。代码、文字和判断跑在 Opus 5.5 的 `xhigh` 推理上，各个评审面板和 swarm 工作者跑在 `high`。没有任何角色跑在 `xhigh` 之上。在评审组之外，Fable 5.2 只在你为某项任务点名它，或同一份简报上两次 Opus 5.5 运行都没通过检查时才跑。`medium` 把每个角色往下降一档，`small` 往下降两档，两者都会少花 token。
 
 你只覆盖你在意的部分。规则里没有对应行的角色，保持该 skill 的默认值。要恢复某个默认值，删掉该角色的那一行。重跑 `/setup-pstack` 会保留任何一个模型与默认值不同的角色。当某个默认值变化时，变化之前写好的规则仍会钉住旧默认值，直到你再次运行 `/setup-pstack`。那一次运行会替换它认得的旧默认值，告诉你替换了哪些，并保留你的其他选择。要丢掉一个它不认得的钉，先删掉该角色的那一行，或者删掉文件。
 
@@ -59,7 +59,7 @@ pstack 会在子 agent 和评审面板上多花 token。这是严格性的代价
 /poteto-mode add a --json flag to this command. text output stays byte-identical. verify both.
 ```
 
-看待办列表。最前面的条目是匹配到的行动手册的步骤，复制了进来；对这条提示词来说是功能行动手册。如果 `/poteto-mode` 跳过某一步，这一步会留在列表里，并带上 `skip: <reason>`，这样你能看见它选择不做的是什么。
+看待办列表。最前面的条目是匹配到的行动手册的步骤，复制了进来；对这条提示词来说是功能行动手册。
 
 从这里开始你可以输入平常的后续消息。要让 `/poteto-mode` 在整个对话里保持生效，从 `/` 菜单里选中它，用 Option+Enter（Mac）或 Alt+Enter（Windows），而不是 Enter。这会把它变成一种[自定义模式](https://cursor.com/docs/skills#using-a-skill-as-a-custom-mode)，在你退出之前，每一轮都留在上下文里。自定义模式在 Agents 窗口和 CLI 里都可用。直接按 Enter 只会把这个 skill 附到一条消息上，随着对话往前走，它会淡出。
 

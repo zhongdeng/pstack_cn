@@ -4,17 +4,17 @@
 |---|---|
 | repo | `cursor/plugins` |
 | path | `pstack` |
-| commit | `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7` |
-| date | 2026-11-16 |
+| commit | `2f87c854fe3e2fcda44ca86b46ede35aad3c46b7` |
+| date | 2026-11-17 |
 
-`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-11-15，`feat(pstack): new default models, one-file why and how, statechart fixes, sharpen and reflect text (#1236)`）。抓取时 `main` 就是这个 SHA。
+`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-11-16，`feat(pstack): shorter skill texts, worker.md, and Opus-first routing capped at xhigh (#1249)`）。抓取时 `main` 就是这个 SHA。
 
 ```json
 {
   "upstreamRepo": "cursor/plugins",
   "path": "pstack",
-  "commit": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
-  "date": "2026-11-16"
+  "commit": "2f87c854fe3e2fcda44ca86b46ede35aad3c46b7",
+  "date": "2026-11-17"
 }
 ```
 
@@ -23,5 +23,4 @@
 - `LICENSE` 的 MIT 法律正文（英文为权威文本）。文件顶部有一句中文说明。
 - `skills/statechart/scripts/` 下的 TypeScript、测试、`package.json`、`tsconfig.json` 和可执行文件 `statechart` 按上游原样复制，包括注释。测试会解析源码并锁定输出。`test/cli.test.ts`、`test/pipeline.test.ts`、`test/corpus.test.ts`、`test/tlc.ts` 和 `test/plain-tlc.test.ts` 锁定的 CLI 与报告字符串包括 `Usage:`、`Wrote`、`Give one SPEC.tla.`、`Unknown option`、`stopped the check, so the command wrote nothing.`、`killed the check, so the command wrote nothing.`、`## Rules that hold`、`## Rules not checked`、`## <rule> breaks`、`The shortest path has`、`TLC's counterexample is in`。图例标记 `Legend`、`Breaks`、`mayBreak`、`bugPath`、`repeats` 同样锁定。`references/render.md` 的说明散文已译，其中的 CSS 代码块未改（`test/render.test.ts` 原样抽取）。
 - 语料与夹具整文件照抄：`skills/statechart/scripts/test/corpus/**`（含 `report.md`、`*.out`、`*.exit`、`*.tla`、`*.cfg`、`*.dot`、`*.mmd`、`view.mjs`）和 `skills/statechart/scripts/test/charts/*.mmd`。
-- `skills/poteto-mode/scripts/check-plan.mjs` 要求的计划骨架，留在 `skills/poteto-mode/playbooks/multi-phase-plan.md`（`## How to read this`、`**Depends on.**`、`**Verify, unit.**` 等）。
-- 技能名、命令、路径、URL、代码围栏、CLI 旗标，以及 Bugbot 量规字段（`fix` / `dismiss` / `ask`，`Confidence`，`Skip when`）。`/interrogate` 的产出字段 **Intent** / **Findings** / **Dropped**，以及要求原样说出的 `no verified findings`，同样保留英文。
+- 技能名、命令、路径、URL、代码围栏、CLI 旗标，以及 Bugbot 量规字段（`fix` / `dismiss` / `ask`，`Confidence`，`Skip when`）。`/interrogate` 的产出字段 **Intent** / **Findings** / **Dropped**，以及要求原样说出的 `no verified findings`，同样保留英文。`/reflect` 交出的 `Accepted`、`Rejected`、`Backlog`，以及 PR 正文标题 `Why`、`What changed`、`Scope`、`Tradeoffs`、`Blast Radius`、`Verification`，也按源文保留英文。

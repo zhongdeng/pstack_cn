@@ -15,36 +15,35 @@ description: 配置 pstack 按角色使用哪些模型，以及用多大的推�
 
 ### 2. 加载当前状态
 
-默认的角色到模型映射就是下面第 5 步所示的规则形状。如果 `~/.cursor/rules/pstack-models.mdc` 已经存在，就读它，并把它的 `# budget` 行和它的角色值当作当前选择。否则从那些默认值开始。一行的角色不在第 5 步里，例如 `how explorer` 或 `why investigators`，就是来自已退役的角色。丢掉它。
+默认的角色到模型映射就是下面第 5 步所示的规则形状。如果 `~/.cursor/rules/pstack-models.mdc` 已经存在，就读它，并把它的 `# budget` 行和它的角色值当作当前选择。否则从那些默认值开始。一行的角色不在第 5 步里，例如 `hardest tasks`、`architect runners`、`reflect tooling` 或 `why investigators`，就是来自已退役的角色。丢掉它。
 
-一条没有 `# defaults: 2` 行的规则来自更早的配置。那次配置给每个角色都写了一行，所以其中一些值是旧默认值，不是选择。旧 slug 是匹配 `grok-*` 的那些。在第 3 步之前，替换这些值：
+一条没有 `# defaults: 3` 行的规则来自更早的配置。那次配置给每个角色都写了一行，所以其中一些值是旧默认值，不是选择。在第 3 步之前，替换这些值：
 
-- `feature, refactoring`、`bug-fix`、`perf-issue`、`hillclimb`、`reflect tooling` 或 `swarm workers` 里的旧 slug，换成该角色在第 5 步的默认值。
-- `hardest tasks` 里的 `claude-opus-*` 值，换成该角色在第 5 步的默认值。
-- 在评审组角色（`arena runners`、`arena cross-judge pool`、`architect runners`、`interrogate reviewers`）里，恰好一个 `claude-opus-*` 条目加一个旧 slug 的列表，不论顺序，换成该角色在第 5 步的列表。任何其他列表里，每个旧 slug 变成 `claude-opus-5-5-high-fast`。
+- `arena cross-judge pool` 恰好是一个 `claude-fable-*` 条目、一个 `claude-opus-*` 条目和一个 `gemini-*` 条目的列表，不论顺序，换成该角色在第 5 步的列表。Fable 和 Opus 是同一个厂商，所以 Fable 那一条能当评判的地方，Opus 那一条也能。
+- `# budget: unlimited` 这一行改成 `large`，因为没有任何角色跑在 `xhigh` 之上。
+- 如果规则里也没有 `# defaults: 2` 那一行，旧 slug 就是匹配 `grok-*` 的那些。`feature, refactoring`、`bug-fix`、`perf-issue`、`hillclimb` 或 `swarm workers` 里的旧 slug，换成该角色在第 5 步的默认值。在评审组角色（`arena runners`、`arena cross-judge pool`、`interrogate reviewers`）里，恰好一个 `claude-opus-*` 条目加一个旧 slug 的列表，不论顺序，换成该角色在第 5 步的列表。任何其他列表里，每个旧 slug 变成 `claude-opus-5-5-high-fast`。
 
 其余每一个值都是用户的选择，留着，包括任何其他角色里的旧 slug，以及每一个 `inherit-parent` 或 `auto` 值。告诉用户你替换了哪些值。
 
 ### 3. 预算、映射和确认
 
-**(a) 询问预算。** 优先用 AskQuestion，而不是自由文本。提供这四个选项，标签必须一字不差，并且当规则记录了当前预算时点明它。没有规则时，说明 `large` 与技能默认值一致。
+**(a) 询问预算。** 优先用 AskQuestion，而不是自由文本。提供这三个选项，标签必须一字不差，并且当规则记录了当前预算时点明它。没有规则时，说明 `large` 与技能默认值一致。
 
-- `unlimited — max reasoning`
 - `large — xhigh reasoning`
 - `medium — high reasoning`
 - `small — medium reasoning`
 
-**(b) 应用它。** 从技能默认值建立工作表，并且在重新运行时保留任何你按家族、列表或别名（`inherit-parent`、`auto`）改过的角色。家族按 **arena** 技能阶段 A 的定义，所以 Fable 自成一个家族。每个角色有一个目标力度，也就是它默认值的力度按预算移动之后的结果。`large` 保持不动，`unlimited` 往上提一档，`medium` 往下降一档，`small` 往下降两档，阶梯是 `max` > `xhigh` > `high` > `medium` > `low`。目标已经在阶梯两端时就停在那里。大多数默认值在 `xhigh`，每个预算标签点名的，就是这些默认值会落到哪一档。把该角色里每一个真实 slug 的力度 token，包括评审组条目，设成该角色的目标。力度 token 是最后一个 token，或尾部 `fast` 之前的那一个。如果结果不是一个检测出来的 slug，就用同一家族里力度不高于目标、且力度最高的那个检测出来的 slug，否则把该角色标为需要选择。`inherit-parent` 和 `auto` 不变。因此 `unlimited` 把 `claude-opus-5-5-xhigh` 变成 `claude-opus-5-5-max`，把 `claude-opus-5-5-high-fast` 变成 `claude-opus-5-5-xhigh-fast`，并保持 `claude-fable-5-2-max`。Gemini 最高到 `high`，所以在 `unlimited` 下，回退保持 `gemini-4-carbon-high` 原样。`small` 把前两个变成 `claude-opus-5-5-medium` 和 `claude-opus-5-5-low-fast`。Fable 5.2 和 Gemini 没有 fast slug，所以绝不要写一个。
+**(b) 应用它。** 从技能默认值建立工作表，并且在重新运行时保留任何你按家族、列表或别名（`inherit-parent`、`auto`）改过的角色。家族按 **arena** 技能阶段 A 的定义，所以 Fable 自成一个家族。每个角色有一个目标力度，也就是它默认值的力度按预算移动之后的结果。`large` 保持不动，`medium` 往下降一档，`small` 往下降两档，阶梯是 `xhigh` > `high` > `medium` > `low`。没有任何角色跑在 `xhigh` 之上，目标已经在阶梯底部时就停在那里。大多数默认值在 `xhigh`，每个预算标签点名的，就是这些默认值会落到哪一档。把该角色里每一个真实 slug 的力度 token，包括评审组条目，设成该角色的目标。力度 token 是最后一个 token，或尾部 `fast` 之前的那一个。如果结果不是一个检测出来的 slug，就用同一家族里力度不高于目标、且力度最高的那个检测出来的 slug，否则把该角色标为需要选择。`inherit-parent` 和 `auto` 不变。因此 `medium` 把 `claude-opus-5-5-xhigh-fast` 变成 `claude-opus-5-5-high-fast`，把 `claude-opus-5-5-high-fast` 变成 `claude-opus-5-5-medium-fast`，`small` 则把它们变成 `claude-opus-5-5-medium-fast` 和 `claude-opus-5-5-low-fast`。Opus 5.5 始终跑它的 `-fast` slug，所以每一个 Opus 5.5 的值都以 `-fast` 结尾。Fable 5.2 和 Gemini 没有 fast slug，所以绝不要写一个。Gemini 最高到 `high`，所以当它所属角色的目标是 `xhigh` 时，Gemini 条目跑在 `high`。
 
-**(c) 展示角色并确认。** 展示每一个角色及其模型，把任何不在检测集合里的真实 slug 标为需要选择。也列出第 2 步丢掉的每一行。询问是按原样接受，还是更改特定角色，选项为检测出来的模型加上 `inherit-parent` 和 `auto`（两者的意思都是：这个角色跑在父对话的模型上，这就是 Auto 用户保持在 Auto 上的方式）。优先用 AskQuestion，而不是自由文本。对于评审组角色（arena runners、architect runners、interrogate reviewers），值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度决定数量。`arena cross-judge pool` 也是一个列表，但 Arena 只跑一个评判者。它按列表顺序只试与父模型不同厂商的值，所以按偏好排好顺序。Fable 和其他 Claude 模型算同一个厂商。`inherit-parent` 或 `auto` 的值从不评判。`swarm workers` 是每个工作单元的默认模型，除非一场竞赛或比较为每一臂指定了另一个模型。
+**(c) 展示角色并确认。** 展示每一个角色及其模型，把任何不在检测集合里的真实 slug 标为需要选择。也列出第 2 步丢掉的每一行。询问是按原样接受，还是更改特定角色，选项为 `xhigh` 及以下的检测出来的模型，加上 `inherit-parent` 和 `auto`（两者的意思都是：这个角色跑在父对话的模型上，这就是 Auto 用户保持在 Auto 上的方式）。优先用 AskQuestion，而不是自由文本。对于评审组角色（arena runners、interrogate reviewers），值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度决定数量。`arena cross-judge pool` 也是一个列表，但 Arena 只跑一个评判者。它按列表顺序只试与父模型不同厂商的值，所以按偏好排好顺序。Fable 和其他 Claude 模型算同一个厂商。`inherit-parent` 或 `auto` 的值从不评判。`swarm workers` 是每个工作单元的默认模型，除非一场竞赛或比较为每一臂指定了另一个模型。
 
 ### 4. 校验
 
-写入的每一个真实 slug 都必须在检测集合里。`inherit-parent` 和 `auto` 始终通过。如果选中的真实 slug 不可用，就停下并再问一次。
+写入的每一个真实 slug 都必须在检测集合里，并且在 `xhigh` 或以下。`inherit-parent` 和 `auto` 始终通过。如果选中的真实 slug 不可用，就停下并再问一次。
 
 ### 5. 写规则
 
-写 `~/.cursor/rules/pstack-models.mdc`，带上 `alwaysApply: true`、`# defaults: 2` 那一行、一行 `# budget`（含所选标签，以及该标签所点名的力度），以及每个角色一行，使用与 poteto-mode 相同的标签。覆盖整个文件，这样重复运行保持幂等。形状：
+写 `~/.cursor/rules/pstack-models.mdc`，带上 `alwaysApply: true`、`# defaults: 3` 那一行、一行 `# budget`（含所选标签，以及该标签所点名的力度），以及每个角色一行，使用与 poteto-mode 相同的标签。覆盖整个文件，这样重复运行保持幂等。形状：
 
 ```
 ---
@@ -52,21 +51,17 @@ description: pstack per-role model choices (overrides skill defaults)
 alwaysApply: true
 ---
 # pstack model configuration. One line per role. Delete a line to fall back to the skill default.
-# `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit Task `model`). Alias entries in a panel list still count toward its fan-out.
-# defaults: 2
+# `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit Task `model` and spawn `generalPurpose`). Alias entries in a panel list still count toward its fan-out.
+# defaults: 3
 # budget: large (xhigh)
-feature, refactoring: claude-opus-5-5-xhigh
-bug-fix: claude-opus-5-5-xhigh
-perf-issue: claude-opus-5-5-xhigh
-hillclimb: claude-opus-5-5-xhigh
-judgment and prose: claude-opus-5-5-xhigh
-hardest tasks: claude-fable-5-2-max
-reflect tooling: claude-opus-5-5-high-fast
-reflect judgment, divergent, synthesizer: claude-opus-5-5-xhigh
+feature, refactoring: claude-opus-5-5-xhigh-fast
+bug-fix: claude-opus-5-5-xhigh-fast
+perf-issue: claude-opus-5-5-xhigh-fast
+hillclimb: claude-opus-5-5-xhigh-fast
+judgment and prose: claude-opus-5-5-xhigh-fast
 arena runners: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
-arena cross-judge pool: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
+arena cross-judge pool: claude-opus-5-5-high-fast, gemini-4-carbon-high
 swarm workers: claude-opus-5-5-high-fast
-architect runners: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
 interrogate reviewers: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
 ```
 

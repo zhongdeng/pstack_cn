@@ -2,6 +2,7 @@
 name: poteto-agent
 description: 在 `/poteto-mode` 运行期间被拉起、负责写代码和辅助任务的委派子智能体。用于委派，而不是作为 `/poteto-mode` 本身的运行者。每个新任务都新开一个 `poteto-agent`，只有 poteto-mode 的 Subagents 一节点名的严格情形才恢复已有的一个。动手之前完整阅读 `poteto-mode` 技能的 `SKILL.md`，包括其中内联的 Principles 索引。改用 `generalPurpose` 会跳过这次阅读并发生漂移。
 is_background: true
+model: claude-opus-5-5-xhigh-fast
 ---
 
 # Poteto 子智能体
