@@ -17,6 +17,8 @@ description: 配置 pstack 按角色使用哪些模型，以及用多大的推�
 
 默认的角色到模型映射就是下面第 5 步所示的规则形状。如果 `~/.cursor/rules/pstack-models.mdc` 已经存在，就读它，并把它的 `# budget` 行和它的角色值当作当前选择。否则从那些默认值开始。一行的角色不在第 5 步里，例如 `hardest tasks`、`architect runners`、`reflect tooling` 或 `why investigators`，就是来自已退役的角色。丢掉它。
 
+更早的默认值曾把另一个 Gemini 模型放在评审组席位上，后来换成 `gemini-4-neon-high`。所以在任何规则里，评审组角色（`arena runners`、`arena cross-judge pool`、`interrogate reviewers`）中的一条 `gemini-4-neon-high`，或一条不是 `gemini-4-neon-*` 的 `gemini-4-*`，都是旧默认值。每一条都变成 `gemini-4-neon-xhigh`。其他档位上的 Gemini 4 Neon 条目是用户的选择，留着。告诉用户你替换了哪些条目。
+
 一条没有 `# defaults: 3` 行的规则来自更早的配置。那次配置给每个角色都写了一行，所以其中一些值是旧默认值，不是选择。在第 3 步之前，替换这些值：
 
 - `arena cross-judge pool` 恰好是一个 `claude-fable-*` 条目、一个 `claude-opus-*` 条目和一个 `gemini-*` 条目的列表，不论顺序，换成该角色在第 5 步的列表。Fable 和 Opus 是同一个厂商，所以 Fable 那一条能当评判的地方，Opus 那一条也能。
@@ -33,7 +35,7 @@ description: 配置 pstack 按角色使用哪些模型，以及用多大的推�
 - `medium — high reasoning`
 - `small — medium reasoning`
 
-**(b) 应用它。** 从技能默认值建立工作表，并且在重新运行时保留任何你按家族、列表或别名（`inherit-parent`、`auto`）改过的角色。家族按 **arena** 技能阶段 A 的定义，所以 Fable 自成一个家族。每个角色有一个目标力度，也就是它默认值的力度按预算移动之后的结果。`large` 保持不动，`medium` 往下降一档，`small` 往下降两档，阶梯是 `xhigh` > `high` > `medium` > `low`。没有任何角色跑在 `xhigh` 之上，目标已经在阶梯底部时就停在那里。大多数默认值在 `xhigh`，每个预算标签点名的，就是这些默认值会落到哪一档。把该角色里每一个真实 slug 的力度 token，包括评审组条目，设成该角色的目标。力度 token 是最后一个 token，或尾部 `fast` 之前的那一个。如果结果不是一个检测出来的 slug，就用同一家族里力度不高于目标、且力度最高的那个检测出来的 slug，否则把该角色标为需要选择。`inherit-parent` 和 `auto` 不变。因此 `medium` 把 `claude-opus-5-5-xhigh-fast` 变成 `claude-opus-5-5-high-fast`，把 `claude-opus-5-5-high-fast` 变成 `claude-opus-5-5-medium-fast`，`small` 则把它们变成 `claude-opus-5-5-medium-fast` 和 `claude-opus-5-5-low-fast`。Opus 5.5 始终跑它的 `-fast` slug，所以每一个 Opus 5.5 的值都以 `-fast` 结尾。Fable 5.2 和 Gemini 没有 fast slug，所以绝不要写一个。Gemini 最高到 `high`，所以当它所属角色的目标是 `xhigh` 时，Gemini 条目跑在 `high`。
+**(b) 应用它。** 从技能默认值建立工作表，并且在重新运行时保留任何你按家族、列表或别名（`inherit-parent`、`auto`）改过的角色。家族按 **arena** 技能阶段 A 的定义，所以 Fable 自成一个家族。每个角色有一个目标力度，也就是它默认值的力度按预算移动之后的结果。`large` 保持不动，`medium` 往下降一档，`small` 往下降两档，阶梯是 `xhigh` > `high` > `medium` > `low`。没有任何角色跑在 `xhigh` 之上，目标已经在阶梯底部时就停在那里。大多数默认值在 `xhigh`，每个预算标签点名的，就是这些默认值会落到哪一档。把该角色里每一个真实 slug 的力度 token，包括评审组条目，设成该角色的目标。力度 token 是最后一个 token，或尾部 `fast` 之前的那一个。如果结果不是一个检测出来的 slug，就用同一家族里力度不高于目标、且力度最高的那个检测出来的 slug，否则把该角色标为需要选择。`inherit-parent` 和 `auto` 不变。因此 `medium` 把 `claude-opus-5-5-xhigh-fast` 变成 `claude-opus-5-5-high-fast`，把 `claude-opus-5-5-high-fast` 变成 `claude-opus-5-5-medium-fast`，`small` 则把它们变成 `claude-opus-5-5-medium-fast` 和 `claude-opus-5-5-low-fast`。Opus 5.5 始终跑它的 `-fast` slug，所以每一个 Opus 5.5 的值都以 `-fast` 结尾。Fable 5.2 和 Gemini 没有 fast slug，所以绝不要写一个。Gemini 4 Neon 的 slug 从 `low` 到 `xhigh`，没有 `max` 或 `fast` slug，所以它的席位跑在 `gemini-4-neon-xhigh`，也就是它的最高 slug。评审组角色里的 Gemini 4 Neon 条目用它自己的目标，也就是把 `xhigh` 按预算移动：`large` 保持 `gemini-4-neon-xhigh`，`medium` 写成 `gemini-4-neon-high`，`small` 写成 `gemini-4-neon-medium`。
 
 **(c) 展示角色并确认。** 展示每一个角色及其模型，把任何不在检测集合里的真实 slug 标为需要选择。也列出第 2 步丢掉的每一行。询问是按原样接受，还是更改特定角色，选项为 `xhigh` 及以下的检测出来的模型，加上 `inherit-parent` 和 `auto`（两者的意思都是：这个角色跑在父对话的模型上，这就是 Auto 用户保持在 Auto 上的方式）。优先用 AskQuestion，而不是自由文本。对于评审组角色（arena runners、interrogate reviewers），值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度决定数量。`arena cross-judge pool` 也是一个列表，但 Arena 只跑一个评判者。它按列表顺序只试与父模型不同厂商的值，所以按偏好排好顺序。Fable 和其他 Claude 模型算同一个厂商。`inherit-parent` 或 `auto` 的值从不评判。`swarm workers` 是每个工作单元的默认模型，除非一场竞赛或比较为每一臂指定了另一个模型。
 
@@ -59,10 +61,10 @@ bug-fix: claude-opus-5-5-xhigh-fast
 perf-issue: claude-opus-5-5-xhigh-fast
 hillclimb: claude-opus-5-5-xhigh-fast
 judgment and prose: claude-opus-5-5-xhigh-fast
-arena runners: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
-arena cross-judge pool: claude-opus-5-5-high-fast, gemini-4-carbon-high
+arena runners: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-neon-xhigh
+arena cross-judge pool: claude-opus-5-5-high-fast, gemini-4-neon-xhigh
 swarm workers: claude-opus-5-5-high-fast
-interrogate reviewers: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-carbon-high
+interrogate reviewers: claude-fable-5-2-high, claude-opus-5-5-high-fast, gemini-4-neon-xhigh
 ```
 
 ### 6. 确认

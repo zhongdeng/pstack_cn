@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 1. 写明每个候选正在产出的产物。
 2. 推导评分标准，3 到 6 条可打分的具体标准，说明成功在*这项*任务上是什么样。它是阶段 D 里挑选者的工具。候选只看得到任务。
-3. 从 `~/.cursor/rules/pstack-models.mdc` 的 `arena runners` 那一行挑选 runner，默认是 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-carbon-high`。`auto` 或 `inherit-parent` 条目就是父模型，所以省略 `model`，并派生 `generalPurpose`。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，或丢掉这个席位，至少留两个 runner，并说明。家族按前缀划分，最长的匹配优先：先丢掉开头的 `cursor-`，然后是 `claude-fable-*`、`claude-*` 和 `gemini-*`。任何其他 slug 的家族，是它第一个连字符之前的那段文字。多个设计方向就多拉几个，工作的瓶颈在生成、而不在判断时，同一个模型重复用。按 **poteto-mode** skill 的 Subagents 一节，为每个子 agent 选定推理档位。
+3. 从 `~/.cursor/rules/pstack-models.mdc` 的 `arena runners` 那一行挑选 runner，默认是 `claude-fable-5-2-high`、`claude-opus-5-5-high-fast` 和 `gemini-4-neon-xhigh`。`auto` 或 `inherit-parent` 条目就是父模型，所以省略 `model`，并派生 `generalPurpose`。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，或丢掉这个席位，至少留两个 runner，并说明。家族按前缀划分，最长的匹配优先：先丢掉开头的 `cursor-`，然后是 `claude-fable-*`、`claude-*` 和 `gemini-*`。任何其他 slug 的家族，是它第一个连字符之前的那段文字。多个设计方向就多拉几个，工作的瓶颈在生成、而不在判断时，同一个模型重复用。按 **poteto-mode** skill 的 Subagents 一节，为每个子 agent 选定推理档位。
 4. 给每个候选自己的产出位置（能用 git worktree 就用，否则用 `/tmp/arena-<slug>/candidate-<n>/`），见 **separate-before-serializing-shared-state** 原则 skill。
 
 ## 阶段 B：铺开
@@ -25,7 +25,7 @@ disable-model-invocation: true
 
 ## 阶段 C：交叉评判
 
-阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行拉起一个只读评判者，默认是 `claude-opus-5-5-high-fast`、`gemini-4-carbon-high`。评判者绝不会来自父模型的厂商，而这次检查里 Fable 算 Claude，所以用另一个厂商的第一个条目。`auto` 或 `inherit-parent` 条目就是父模型。如果你不知道父模型是什么，就用第一个真实 slug，并说明厂商检查没有跑。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，然后试下一个这样的条目，或者跳过评判者，并说明。你在阶段 D 阅读时，评判者按路径标签、对照每一条评分标准给每个候选打分，并推荐一份底稿。
+阶段 B 的全部候选完成之后，从 `~/.cursor/rules/pstack-models.mdc` 的 `arena cross-judge pool` 那一行拉起一个只读评判者，默认是 `claude-opus-5-5-high-fast`、`gemini-4-neon-xhigh`。评判者绝不会来自父模型的厂商，而这次检查里 Fable 算 Claude，所以用另一个厂商的第一个条目。`auto` 或 `inherit-parent` 条目就是父模型。如果你不知道父模型是什么，就用第一个真实 slug，并说明厂商检查没有跑。Task 工具拒绝一个 slug 时，用同一家族最接近的合法 slug，然后试下一个这样的条目，或者跳过评判者，并说明。你在阶段 D 阅读时，评判者按路径标签、对照每一条评分标准给每个候选打分，并推荐一份底稿。
 
 ## 阶段 D：选定底稿
 

@@ -40,7 +40,7 @@ Claude Code 安装的是一份生成出来的 pstack 副本，包括这份 readm
 
 刚来？[pstack 指南](./docs/guide/README.md)会带你走完第一个真实任务，从安装和写提示词，一直到验证和通宵运行。卡住了，或者不确定哪个 skill 合适？问 [`/poteto-help`](./skills/poteto-help/SKILL.md)。
 
-就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，代码委派（feature、refactoring、bug fix、perf、hillclimb）、文字和判断交给 Opus 5.5，档位是 xhigh，而且没有任何角色跑在 xhigh 之上。在评审组之外，Fable 5.2 只在你点名它，或同一份简报上两次 Opus 5.5 运行都没通过检查时才跑。默认面板是 Fable 5.2 / Opus 5.5 / Gemini 4 Carbon。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
+就这些。其他 skill 看情况使用，这个 mode skill 会在需要时替你调用它们。开箱时，代码委派（feature、refactoring、bug fix、perf、hillclimb）、文字和判断交给 Opus 5.5，档位是 xhigh，而且没有任何角色跑在 xhigh 之上。在评审组之外，Fable 5.2 只在你点名它，或同一份简报上两次 Opus 5.5 运行都没通过检查时才跑。默认面板是 Fable 5.2 / Opus 5.5 / Gemini 4 Neon。[`/setup-pstack`](./skills/setup-pstack/SKILL.md) 可以改其中任何一项。
 
 ## 用法
 

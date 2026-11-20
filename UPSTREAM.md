@@ -4,17 +4,17 @@
 |---|---|
 | repo | `cursor/plugins` |
 | path | `pstack` |
-| commit | `2f87c854fe3e2fcda44ca86b46ede35aad3c46b7` |
-| date | 2026-11-17 |
+| commit | `0b46ec399d55f2829e88822998f53b84944837d3` |
+| date | 2026-11-20 |
 
-`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-11-16，`feat(pstack): shorter skill texts, worker.md, and Opus-first routing capped at xhigh (#1249)`）。抓取时 `main` 就是这个 SHA。
+`commit` 是 `main` 上最后一次改动 `pstack/` 的提交（2026-11-19，`fix(pstack): run /statechart on native Windows and read TLC's \r\n line ends (#1292)`）。抓取时 `main` 就是这个 SHA。
 
 ```json
 {
   "upstreamRepo": "cursor/plugins",
   "path": "pstack",
-  "commit": "2f87c854fe3e2fcda44ca86b46ede35aad3c46b7",
-  "date": "2026-11-17"
+  "commit": "0b46ec399d55f2829e88822998f53b84944837d3",
+  "date": "2026-11-20"
 }
 ```
 
